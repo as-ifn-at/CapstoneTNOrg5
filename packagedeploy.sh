@@ -57,26 +57,31 @@ export CORE_PEER_TLS_ENABLED=true
 export $(./setOrgEnv.sh org1 | xargs)
 peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.chaincart.com --channelID ${channelname} --name ${packagename} --version 1.0 --package-id $CC_PACKAGE_ID --sequence 1 --tls --cafile "${PWD}/organizations/ordererOrganizations/chaincart.com/orderers/orderer.chaincart.com/msp/tlscacerts/tlsca.chaincart.com-cert.pem"
 echo "------------Success-----------"
+sleep 5
 
 echo "------------Approving chaincode by Org2-----------"
 export $(./setOrgEnv.sh org2 | xargs)
 peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.chaincart.com --channelID ${channelname} --name ${packagename} --version 1.0 --package-id $CC_PACKAGE_ID --sequence 1 --tls --cafile "${PWD}/organizations/ordererOrganizations/chaincart.com/orderers/orderer.chaincart.com/msp/tlscacerts/tlsca.chaincart.com-cert.pem"
 echo "------------Success-----------"
+sleep 5
 
 echo "------------Approving chaincode by Org3-----------"
 export $(./setOrgEnv.sh org3 | xargs)
 peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.chaincart.com --channelID ${channelname} --name ${packagename} --version 1.0 --package-id $CC_PACKAGE_ID --sequence 1 --tls --cafile "${PWD}/organizations/ordererOrganizations/chaincart.com/orderers/orderer.chaincart.com/msp/tlscacerts/tlsca.chaincart.com-cert.pem"
 echo "------------Success-----------"
+sleep 5
 
 echo "------------Approving chaincode by Org4-----------"
 export $(./setOrgEnv.sh org4 | xargs)
 peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.chaincart.com --channelID ${channelname} --name ${packagename} --version 1.0 --package-id $CC_PACKAGE_ID --sequence 1 --tls --cafile "${PWD}/organizations/ordererOrganizations/chaincart.com/orderers/orderer.chaincart.com/msp/tlscacerts/tlsca.chaincart.com-cert.pem"
 echo "------------Success-----------"
+sleep 5
 
 echo "------------Approving chaincode by Org5-----------"
 export $(./setOrgEnv.sh org5 | xargs)
 peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.chaincart.com --channelID ${channelname} --name ${packagename} --version 1.0 --package-id $CC_PACKAGE_ID --sequence 1 --tls --cafile "${PWD}/organizations/ordererOrganizations/chaincart.com/orderers/orderer.chaincart.com/msp/tlscacerts/tlsca.chaincart.com-cert.pem"
 echo "------------Success-----------"
+sleep 5
 
 peer lifecycle chaincode checkcommitreadiness --channelID ${channelname} --name ${packagename} --version 1.0 --sequence 1 --tls --cafile "${PWD}/organizations/ordererOrganizations/chaincart.com/orderers/orderer.chaincart.com/msp/tlscacerts/tlsca.chaincart.com-cert.pem" --output json
 sleep 3
