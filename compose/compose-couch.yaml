@@ -110,7 +110,7 @@ services:
     # Comment/Uncomment the port mapping if you want to hide/expose the CouchDB service,
     # for chaincart map it to utilize Fauxton User Interface in dev environments.
     ports:
-      - "11984:5984"
+      - "1984:5984"
     networks:
       - test
 
