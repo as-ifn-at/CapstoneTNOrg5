@@ -23,35 +23,35 @@ PEER0_ORG4_CA=${DIR}/test-network/organizations/peerOrganizations/org4.chaincart
 PEER0_ORG3_CA=${DIR}/test-network/organizations/peerOrganizations/org5.chaincart.com/tlsca/tlsca.org5.chaincart.com-cert.pem
 
 
-if [[ ${ORG,,} == "org1" || ${ORG,,} == "digibank" ]]; then
+if [[ ${ORG} == "org1" || ${ORG} == "digibank" ]]; then
 
    CORE_PEER_LOCALMSPID=Org1MSP
    CORE_PEER_MSPCONFIGPATH=${DIR}/test-network/organizations/peerOrganizations/org1.chaincart.com/users/Admin@org1.chaincart.com/msp
    CORE_PEER_ADDRESS=localhost:7051
    CORE_PEER_TLS_ROOTCERT_FILE=${DIR}/test-network/organizations/peerOrganizations/org1.chaincart.com/tlsca/tlsca.org1.chaincart.com-cert.pem
 
-elif [[ ${ORG,,} == "org2" || ${ORG,,} == "magnetocorp" ]]; then
+elif [[ ${ORG} == "org2" || ${ORG} == "magnetocorp" ]]; then
 
    CORE_PEER_LOCALMSPID=Org2MSP
    CORE_PEER_MSPCONFIGPATH=${DIR}/test-network/organizations/peerOrganizations/org2.chaincart.com/users/Admin@org2.chaincart.com/msp
    CORE_PEER_ADDRESS=localhost:9051
    CORE_PEER_TLS_ROOTCERT_FILE=${DIR}/test-network/organizations/peerOrganizations/org2.chaincart.com/tlsca/tlsca.org2.chaincart.com-cert.pem
 
-elif [[ ${ORG,,} == "org3" || ${ORG,,} == "magnetocorp" ]]; then
+elif [[ ${ORG} == "org3" || ${ORG} == "magnetocorp" ]]; then
 
    CORE_PEER_LOCALMSPID=Org3MSP
    CORE_PEER_MSPCONFIGPATH=${DIR}/test-network/organizations/peerOrganizations/org3.chaincart.com/users/Admin@org3.chaincart.com/msp
    CORE_PEER_ADDRESS=localhost:11051
    CORE_PEER_TLS_ROOTCERT_FILE=${DIR}/test-network/organizations/peerOrganizations/org3.chaincart.com/tlsca/tlsca.org3.chaincart.com-cert.pem
 
-elif [[ ${ORG,,} == "org4" || ${ORG,,} == "magnetocorp" ]]; then
+elif [[ ${ORG} == "org4" || ${ORG} == "magnetocorp" ]]; then
 
    CORE_PEER_LOCALMSPID=Org4MSP
    CORE_PEER_MSPCONFIGPATH=${DIR}/test-network/organizations/peerOrganizations/org4.chaincart.com/users/Admin@org4.chaincart.com/msp
    CORE_PEER_ADDRESS=localhost:13051
    CORE_PEER_TLS_ROOTCERT_FILE=${DIR}/test-network/organizations/peerOrganizations/org4.chaincart.com/tlsca/tlsca.org4.chaincart.com-cert.pem
 
-elif [[ ${ORG,,} == "org5" || ${ORG,,} == "magnetocorp" ]]; then
+elif [[ ${ORG} == "org5" || ${ORG} == "magnetocorp" ]]; then
 
    CORE_PEER_LOCALMSPID=Org5MSP
    CORE_PEER_MSPCONFIGPATH=${DIR}/test-network/organizations/peerOrganizations/org5.chaincart.com/users/Admin@org5.chaincart.com/msp
