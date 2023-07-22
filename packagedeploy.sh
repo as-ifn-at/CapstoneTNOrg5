@@ -50,7 +50,7 @@ export CC_PACKAGE_ID=${pid}
 
 echo ${pid}
 
-echo "=======Approve chaincode by all 3 orgs======="
+echo "=======Approve chaincode by all 5 orgs======="
 
 echo "------------Approving chaincode by Org1-----------"
 export CORE_PEER_TLS_ENABLED=true
@@ -89,11 +89,13 @@ peer lifecycle chaincode querycommitted --channelID ${channelname} --name ${pack
 
 # Invoke chaincode
 
-peer lifecycle chaincode commit -o localhost:7050 --ordererTLSHostnameOverride orderer.chaincart.com --channelID ${channelname} --name ${packagename} --version 1.0 --sequence 1 --tls --cafile "${PWD}/organizations/ordererOrganizations/chaincart.com/orderers/orderer.chaincart.com/msp/tlscacerts/tlsca.chaincart.com-cert.pem" --peerAddresses localhost:7051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org1.chaincart.com/peers/peer0.org1.chaincart.com/tls/ca.crt" --peerAddresses localhost:9051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org2.chaincart.com/peers/peer0.org2.chaincart.com/tls/ca.crt" --peerAddresses localhost:11051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org3.chaincart.com/peers/peer0.org3.chaincart.com/tls/ca.crt" --peerAddresses localhost:13051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org4.chaincart.com/peers/peer0.org4.chaincart.com/tls/ca.crt" --peerAddresses localhost:15051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org5.chaincart.com/peers/peer0.org5.chaincart.com/tls/ca.crt" -c '{"function":"InitLedger","Args":[]}'
+peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.chaincart.com --tls --cafile "${PWD}/organizations/ordererOrganizations/chaincart.com/orderers/orderer.chaincart.com/msp/tlscacerts/tlsca.chaincart.com-cert.pem" -C mychannel -n basic --peerAddresses localhost:7051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org1.chaincart.com/peers/peer0.org1.chaincart.com/tls/ca.crt" --peerAddresses localhost:9051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org2.chaincart.com/peers/peer0.org2.chaincart.com/tls/ca.crt" --peerAddresses localhost:11051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org3.chaincart.com/peers/peer0.org3.chaincart.com/tls/ca.crt" --peerAddresses localhost:13051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org4.chaincart.com/peers/peer0.org4.chaincart.com/tls/ca.crt" --peerAddresses localhost:15051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org5.chaincart.com/peers/peer0.org5.chaincart.com/tls/ca.crt" -c '{"function":"InitLedger","Args":[]}'
+
 
 sleep 2
 
 peer chaincode query -C mychannel -n basic -c '{"Args":["GetAllAssets"]}' | jq .
+
 
 # cd api
 
