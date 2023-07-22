@@ -6,7 +6,7 @@
 
 
 # default to using Org1
-ORG=${1:-Org1}
+ORG=${1:-org1}
 
 # Exit on first error, print all commands.
 set -e
