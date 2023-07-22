@@ -25,11 +25,11 @@ infoln "Using ${CONTAINER_CLI} and ${CONTAINER_CLI_COMPOSE}"
 # Print the usage message
 function printHelp () {
   echo "Usage: "
-  echo "  addOrg3.sh up|down|generate [-c <channel name>] [-t <timeout>] [-d <delay>] [-f <docker-compose-file>] [-s <dbtype>]"
-  echo "  addOrg3.sh -h|--help (print this message)"
+  echo "  addAmazon.sh up|down|generate [-c <channel name>] [-t <timeout>] [-d <delay>] [-f <docker-compose-file>] [-s <dbtype>]"
+  echo "  addAmazon.sh -h|--help (print this message)"
   echo "    <mode> - one of 'up', 'down', or 'generate'"
-  echo "      - 'up' - add org3 to the sample network. You need to bring up the test network and create a channel first."
-  echo "      - 'down' - bring down the test network and org3 nodes"
+  echo "      - 'up' - add amazon to the sample network. You need to bring up the test network and create a channel first."
+  echo "      - 'down' - bring down the test network and amazon nodes"
   echo "      - 'generate' - generate required certificates and org definition"
   echo "    -c <channel name> - test network channel name (defaults to \"mychannel\")"
   echo "    -ca <use CA> -  Use a CA to generate the crypto material"
@@ -41,22 +41,22 @@ function printHelp () {
   echo "Typically, one would first generate the required certificates and "
   echo "genesis block, then bring up the network. e.g.:"
   echo
-  echo "	addOrg3.sh generate"
-  echo "	addOrg3.sh up"
-  echo "	addOrg3.sh up -c mychannel -s couchdb"
-  echo "	addOrg3.sh down"
+  echo "	addAmazon.sh generate"
+  echo "	addAmazon.sh up"
+  echo "	addAmazon.sh up -c mychannel -s couchdb"
+  echo "	addAmazon.sh down"
   echo
   echo "Taking all defaults:"
-  echo "	addOrg3.sh up"
-  echo "	addOrg3.sh down"
+  echo "	addAmazon.sh up"
+  echo "	addAmazon.sh down"
 }
 
 # We use the cryptogen tool to generate the cryptographic material
 # (x509 certs) for the new org.  After we run the tool, the certs will
-# be put in the organizations folder with org1 and org2
+# be put in the organizations folder with platform and flipkart
 
 # Create Organziation crypto material using cryptogen or CAs
-function generateOrg3() {
+function generateAmazon() {
   # Create crypto material using cryptogen
   if [ "$CRYPTO" == "cryptogen" ]; then
     which cryptogen
@@ -65,10 +65,10 @@ function generateOrg3() {
     fi
     infoln "Generating certificates using cryptogen tool"
 
-    infoln "Creating Org3 Identities"
+    infoln "Creating Amazon Identities"
 
     set -x
-    cryptogen generate --config=org3-crypto.yaml --output="../organizations"
+    cryptogen generate --config=amazon-crypto.yaml --output="../organizations"
     res=$?
     { set +x; } 2>/dev/null
     if [ $res -ne 0 ]; then
@@ -89,83 +89,83 @@ function generateOrg3() {
     fi
 
     infoln "Generating certificates using Fabric CA"
-    ${CONTAINER_CLI_COMPOSE} -f ${COMPOSE_FILE_CA_BASE} -f $COMPOSE_FILE_CA_ORG3 up -d 2>&1
+    ${CONTAINER_CLI_COMPOSE} -f ${COMPOSE_FILE_CA_BASE} -f $COMPOSE_FILE_CA_AMAZON up -d 2>&1
 
     . fabric-ca/registerEnroll.sh
 
     sleep 10
 
-    infoln "Creating Org3 Identities"
-    createOrg3
+    infoln "Creating Amazon Identities"
+    createAmazon
 
   fi
 
-  infoln "Generating CCP files for Org3"
+  infoln "Generating CCP files for Amazon"
   ./ccp-generate.sh
 }
 
 # Generate channel configuration transaction
-function generateOrg3Definition() {
+function generateAmazonDefinition() {
   which configtxgen
   if [ "$?" -ne 0 ]; then
     fatalln "configtxgen tool not found. exiting"
   fi
-  infoln "Generating Org3 organization definition"
+  infoln "Generating Amazon organization definition"
   export FABRIC_CFG_PATH=$PWD
   set -x
-  configtxgen -printOrg Org3MSP > ../organizations/peerOrganizations/org3.chaincart.com/org3.json
+  configtxgen -printOrg AmazonMSP > ../organizations/peerOrganizations/amazon.chaincart.com/amazon.json
   res=$?
   { set +x; } 2>/dev/null
   if [ $res -ne 0 ]; then
-    fatalln "Failed to generate Org3 organization definition..."
+    fatalln "Failed to generate Amazon organization definition..."
   fi
 }
 
-function Org3Up () {
-  # start org3 nodes
+function AmazonUp () {
+  # start amazon nodes
 
   if [ "$CONTAINER_CLI" == "podman" ]; then
-    cp ../podman/core.yaml ../../organizations/peerOrganizations/org3.chaincart.com/peers/peer0.org3.chaincart.com/
+    cp ../podman/core.yaml ../../organizations/peerOrganizations/amazon.chaincart.com/peers/peer0.amazon.chaincart.com/
   fi
 
   if [ "${DATABASE}" == "couchdb" ]; then
-    DOCKER_SOCK=${DOCKER_SOCK} ${CONTAINER_CLI_COMPOSE} -f ${COMPOSE_FILE_BASE} -f $COMPOSE_FILE_ORG3 -f ${COMPOSE_FILE_COUCH_BASE} -f $COMPOSE_FILE_COUCH_ORG3 up -d 2>&1
+    DOCKER_SOCK=${DOCKER_SOCK} ${CONTAINER_CLI_COMPOSE} -f ${COMPOSE_FILE_BASE} -f $COMPOSE_FILE_AMAZON -f ${COMPOSE_FILE_COUCH_BASE} -f $COMPOSE_FILE_COUCH_AMAZON up -d 2>&1
   else
-    DOCKER_SOCK=${DOCKER_SOCK} ${CONTAINER_CLI_COMPOSE} -f ${COMPOSE_FILE_BASE} -f $COMPOSE_FILE_ORG3 up -d 2>&1
+    DOCKER_SOCK=${DOCKER_SOCK} ${CONTAINER_CLI_COMPOSE} -f ${COMPOSE_FILE_BASE} -f $COMPOSE_FILE_AMAZON up -d 2>&1
   fi
   if [ $? -ne 0 ]; then
-    fatalln "ERROR !!!! Unable to start Org3 network"
+    fatalln "ERROR !!!! Unable to start Amazon network"
   fi
 }
 
 # Generate the needed certificates, the genesis block and start the network.
-function addOrg3 () {
+function addAmazon () {
   # If the test network is not up, abort
   if [ ! -d ../organizations/ordererOrganizations ]; then
     fatalln "ERROR: Please, run ./network.sh up createChannel first."
   fi
 
   # generate artifacts if they don't exist
-  if [ ! -d "../organizations/peerOrganizations/org3.chaincart.com" ]; then
-    generateOrg3
-    generateOrg3Definition
+  if [ ! -d "../organizations/peerOrganizations/amazon.chaincart.com" ]; then
+    generateAmazon
+    generateAmazonDefinition
   fi
 
-  infoln "Bringing up Org3 peer"
-  Org3Up
+  infoln "Bringing up Amazon peer"
+  AmazonUp
 
   # Use the CLI container to create the configuration transaction needed to add
-  # Org3 to the network
-  infoln "Generating and submitting config tx to add Org3"
-  ${CONTAINER_CLI} exec cli ./scripts/org3-scripts/updateChannelConfig.sh $CHANNEL_NAME $CLI_DELAY $CLI_TIMEOUT $VERBOSE
+  # Amazon to the network
+  infoln "Generating and submitting config tx to add Amazon"
+  ${CONTAINER_CLI} exec cli ./scripts/amazon-scripts/updateChannelConfig.sh $CHANNEL_NAME $CLI_DELAY $CLI_TIMEOUT $VERBOSE
   if [ $? -ne 0 ]; then
     fatalln "ERROR !!!! Unable to create config tx"
   fi
 
-  infoln "Joining Org3 peers to network"
-  ${CONTAINER_CLI} exec cli ./scripts/org3-scripts/joinChannel.sh $CHANNEL_NAME $CLI_DELAY $CLI_TIMEOUT $VERBOSE
+  infoln "Joining Amazon peers to network"
+  ${CONTAINER_CLI} exec cli ./scripts/amazon-scripts/joinChannel.sh $CHANNEL_NAME $CLI_DELAY $CLI_TIMEOUT $VERBOSE
   if [ $? -ne 0 ]; then
-    fatalln "ERROR !!!! Unable to join Org3 peers to network"
+    fatalln "ERROR !!!! Unable to join Amazon peers to network"
   fi
 }
 
@@ -185,14 +185,14 @@ CLI_DELAY=3
 # channel name defaults to "mychannel"
 CHANNEL_NAME="mychannel"
 # use this as the docker compose couch file
-COMPOSE_FILE_COUCH_BASE=compose/compose-couch-org3.yaml
-COMPOSE_FILE_COUCH_ORG3=compose/${CONTAINER_CLI}/docker-compose-couch-org3.yaml
+COMPOSE_FILE_COUCH_BASE=compose/compose-couch-amazon.yaml
+COMPOSE_FILE_COUCH_AMAZON=compose/${CONTAINER_CLI}/docker-compose-couch-amazon.yaml
 # use this as the default docker-compose yaml definition
-COMPOSE_FILE_BASE=compose/compose-org3.yaml
-COMPOSE_FILE_ORG3=compose/${CONTAINER_CLI}/docker-compose-org3.yaml
+COMPOSE_FILE_BASE=compose/compose-amazon.yaml
+COMPOSE_FILE_AMAZON=compose/${CONTAINER_CLI}/docker-compose-amazon.yaml
 # certificate authorities compose file
-COMPOSE_FILE_CA_BASE=compose/compose-ca-org3.yaml
-COMPOSE_FILE_CA_ORG3=compose/${CONTAINER_CLI}/docker-compose-ca-org3.yaml
+COMPOSE_FILE_CA_BASE=compose/compose-ca-amazon.yaml
+COMPOSE_FILE_CA_AMAZON=compose/${CONTAINER_CLI}/docker-compose-ca-amazon.yaml
 # database
 DATABASE="leveldb"
 
@@ -254,12 +254,12 @@ done
 
 # Determine whether starting, stopping, restarting or generating for announce
 if [ "$MODE" == "up" ]; then
-  infoln "Adding org3 to channel '${CHANNEL_NAME}' with '${CLI_TIMEOUT}' seconds and CLI delay of '${CLI_DELAY}' seconds and using database '${DATABASE}'"
+  infoln "Adding amazon to channel '${CHANNEL_NAME}' with '${CLI_TIMEOUT}' seconds and CLI delay of '${CLI_DELAY}' seconds and using database '${DATABASE}'"
   echo
 elif [ "$MODE" == "down" ]; then
   EXPMODE="Stopping network"
 elif [ "$MODE" == "generate" ]; then
-  EXPMODE="Generating certs and organization definition for Org3"
+  EXPMODE="Generating certs and organization definition for Amazon"
 else
   printHelp
   exit 1
@@ -267,12 +267,12 @@ fi
 
 #Create the network using docker compose
 if [ "${MODE}" == "up" ]; then
-  addOrg3
+  addAmazon
 elif [ "${MODE}" == "down" ]; then ## Clear the network
   networkDown
 elif [ "${MODE}" == "generate" ]; then ## Generate Artifacts
-  generateOrg3
-  generateOrg3Definition
+  generateAmazon
+  generateAmazonDefinition
 else
   printHelp
   exit 1

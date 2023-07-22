@@ -9,10 +9,10 @@
 # ---------------------------------------------------------------------------
 PeerOrgs:
   # ---------------------------------------------------------------------------
-  # Org1
+  # Platform
   # ---------------------------------------------------------------------------
-  - Name: Org1
-    Domain: org1.chaincart.com
+  - Name: Platform
+    Domain: platform.chaincart.com
     EnableNodeOUs: true
     # ---------------------------------------------------------------------------
     # "Specs"
@@ -30,8 +30,8 @@ PeerOrgs:
     #                 which obtains its values from the Spec.Hostname and
     #                 Org.Domain, respectively.
     # ---------------------------------------------------------------------------
-    #   - Hostname: foo # implicitly "foo.org1.chaincart.com"
-    #     CommonName: foo27.org5.chaincart.com # overrides Hostname-based FQDN set above
+    #   - Hostname: foo # implicitly "foo.platform.chaincart.com"
+    #     CommonName: foo27.tataneu.chaincart.com # overrides Hostname-based FQDN set above
     #   - Hostname: bar
     #   - Hostname: baz
     # ---------------------------------------------------------------------------

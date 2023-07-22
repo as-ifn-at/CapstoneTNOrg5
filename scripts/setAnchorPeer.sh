@@ -18,19 +18,19 @@ createAnchorPeerUpdate() {
   infoln "Generating anchor peer update transaction for Org${ORG} on channel $CHANNEL_NAME"
 
   if [ $ORG -eq 1 ]; then
-    HOST="peer0.org1.chaincart.com"
+    HOST="peer0.platform.chaincart.com"
     PORT=7051
   elif [ $ORG -eq 2 ]; then
-    HOST="peer0.org2.chaincart.com"
+    HOST="peer0.flipkart.chaincart.com"
     PORT=9051
   elif [ $ORG -eq 3 ]; then
-    HOST="peer0.org3.chaincart.com"
+    HOST="peer0.amazon.chaincart.com"
     PORT=11051
   elif [ $ORG -eq 4 ]; then
-    HOST="peer0.org4.chaincart.com"
+    HOST="peer0.myntra.chaincart.com"
     PORT=13051
   elif [ $ORG -eq 5 ]; then
-    HOST="peer0.org5.chaincart.com"
+    HOST="peer0.tataneu.chaincart.com"
     PORT=15051
   else
     errorln "Org${ORG} unknown"

@@ -140,36 +140,36 @@ checkPrereqs
 ## package the chaincode
 packageChaincode
 
-## Install chaincode on peer0.org1 and peer0.org2
-infoln "Installing chaincode on peer0.org1..."
+## Install chaincode on peer0.platform and peer0.flipkart
+infoln "Installing chaincode on peer0.platform..."
 installChaincode 1
-infoln "Install chaincode on peer0.org2..."
+infoln "Install chaincode on peer0.flipkart..."
 installChaincode 2
-infoln "Install chaincode on peer0.org3..."
+infoln "Install chaincode on peer0.amazon..."
 installChaincode 3
-infoln "Install chaincode on peer0.org4..."
+infoln "Install chaincode on peer0.myntra..."
 installChaincode 4
-infoln "Install chaincode on peer0.org5..."
+infoln "Install chaincode on peer0.tataneu..."
 installChaincode 5
 
 ## query whether the chaincode is installed
 queryInstalled 1
 
-## approve the definition for org1
+## approve the definition for platform
 approveForMyOrg 1
 
 ## check whether the chaincode definition is ready to be committed
-## expect org1 to have approved and org2 not to
-checkCommitReadiness 1 "\"Org1MSP\": true" "\"Org2MSP\": false"
-checkCommitReadiness 2 "\"Org1MSP\": true" "\"Org2MSP\": false"
+## expect platform to have approved and flipkart not to
+checkCommitReadiness 1 "\"PlatformMSP\": true" "\"FlipkartMSP\": false"
+checkCommitReadiness 2 "\"PlatformMSP\": true" "\"FlipkartMSP\": false"
 
-## now approve also for org2
+## now approve also for flipkart
 approveForMyOrg 2
 
 ## check whether the chaincode definition is ready to be committed
 ## expect them both to have approved
-checkCommitReadiness 1 "\"Org1MSP\": true" "\"Org2MSP\": true"
-checkCommitReadiness 2 "\"Org1MSP\": true" "\"Org2MSP\": true"
+checkCommitReadiness 1 "\"PlatformMSP\": true" "\"FlipkartMSP\": true"
+checkCommitReadiness 2 "\"PlatformMSP\": true" "\"FlipkartMSP\": true"
 
 ## now that we know for sure both orgs have approved, commit the definition
 commitChaincodeDefinition 1 2

@@ -13,26 +13,26 @@
 #
 ################################################################################
 Organizations:
-    - &Org3
+    - &Amazon
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: Org3MSP
+        Name: AmazonMSP
 
         # ID to load the MSP definition as
-        ID: Org3MSP
+        ID: AmazonMSP
 
-        MSPDir: ../organizations/peerOrganizations/org3.chaincart.com/msp
+        MSPDir: ../organizations/peerOrganizations/amazon.chaincart.com/msp
 
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('Org3MSP.admin', 'Org3MSP.peer', 'Org3MSP.client')"
+                Rule: "OR('AmazonMSP.admin', 'AmazonMSP.peer', 'AmazonMSP.client')"
             Writers:
                 Type: Signature
-                Rule: "OR('Org3MSP.admin', 'Org3MSP.client')"
+                Rule: "OR('AmazonMSP.admin', 'AmazonMSP.client')"
             Admins:
                 Type: Signature
-                Rule: "OR('Org3MSP.admin')"
+                Rule: "OR('AmazonMSP.admin')"
             Endorsement:
                 Type: Signature
-                Rule: "OR('Org3MSP.peer')"
+                Rule: "OR('AmazonMSP.peer')"

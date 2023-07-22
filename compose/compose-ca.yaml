@@ -11,13 +11,13 @@ networks:
 
 services:
 
-  ca_org1:
+  ca_platform:
     image: hyperledger/fabric-ca:latest
     labels:
       service: hyperledger-fabric
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
-      - FABRIC_CA_SERVER_CA_NAME=ca-org1
+      - FABRIC_CA_SERVER_CA_NAME=ca-platform
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_PORT=7054
       - FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS=0.0.0.0:17054
@@ -26,18 +26,18 @@ services:
       - "17054:17054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
     volumes:
-      - ../organizations/fabric-ca/org1:/etc/hyperledger/fabric-ca-server
-    container_name: ca_org1
+      - ../organizations/fabric-ca/platform:/etc/hyperledger/fabric-ca-server
+    container_name: ca_platform
     networks:
       - test
 
-  ca_org2:
+  ca_flipkart:
     image: hyperledger/fabric-ca:latest
     labels:
       service: hyperledger-fabric
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
-      - FABRIC_CA_SERVER_CA_NAME=ca-org2
+      - FABRIC_CA_SERVER_CA_NAME=ca-flipkart
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_PORT=8054
       - FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS=0.0.0.0:18054
@@ -46,8 +46,8 @@ services:
       - "18054:18054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
     volumes:
-      - ../organizations/fabric-ca/org2:/etc/hyperledger/fabric-ca-server
-    container_name: ca_org2
+      - ../organizations/fabric-ca/flipkart:/etc/hyperledger/fabric-ca-server
+    container_name: ca_flipkart
     networks:
       - test
 
@@ -71,13 +71,13 @@ services:
     networks:
       - test
 
-  ca_org4:
+  ca_myntra:
     image: hyperledger/fabric-ca:latest
     labels:
       service: hyperledger-fabric
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
-      - FABRIC_CA_SERVER_CA_NAME=ca-org4
+      - FABRIC_CA_SERVER_CA_NAME=ca-myntra
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_PORT=10054
       - FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS=0.0.0.0:20054
@@ -86,18 +86,18 @@ services:
       - "20054:20054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
     volumes:
-      - ../organizations/fabric-ca/org4:/etc/hyperledger/fabric-ca-server
-    container_name: ca_org4
+      - ../organizations/fabric-ca/myntra:/etc/hyperledger/fabric-ca-server
+    container_name: ca_myntra
     networks:
       - test
 
-  ca_org5:
+  ca_tataneu:
     image: hyperledger/fabric-ca:latest
     labels:
       service: hyperledger-fabric
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
-      - FABRIC_CA_SERVER_CA_NAME=ca-org5
+      - FABRIC_CA_SERVER_CA_NAME=ca-tataneu
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_PORT=11054
       - FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS=0.0.0.0:21054
@@ -106,18 +106,18 @@ services:
       - "21054:21054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
     volumes:
-      - ../organizations/fabric-ca/org5:/etc/hyperledger/fabric-ca-server
-    container_name: ca_org5
+      - ../organizations/fabric-ca/tataneu:/etc/hyperledger/fabric-ca-server
+    container_name: ca_tataneu
     networks:
       - test
 
-  ca_org3:
+  ca_amazon:
     image: hyperledger/fabric-ca:latest
     labels:
       service: hyperledger-fabric
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
-      - FABRIC_CA_SERVER_CA_NAME=ca-org3
+      - FABRIC_CA_SERVER_CA_NAME=ca-amazon
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_PORT=11154
       - FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS=0.0.0.0:22054
@@ -126,7 +126,7 @@ services:
       - "22054:22054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
     volumes:
-      - ../organizations/fabric-ca/org3:/etc/hyperledger/fabric-ca-server
-    container_name: ca_org3
+      - ../organizations/fabric-ca/amazon:/etc/hyperledger/fabric-ca-server
+    container_name: ca_amazon
     networks:
       - test

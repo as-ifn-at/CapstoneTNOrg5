@@ -7,14 +7,14 @@
 #   arguments or environment variables.  The precedence for determining
 #   the value of each element is as follows:
 #   1) command line argument
-#      Examples:
+#      Chaincarts:
 #      a) --port 443
 #         To set the listening port
 #      b) --ca.keyfile ../mykey.pem
 #         To set the "keyfile" element in the "ca" section below;
 #         note the '.' separator character.
 #   2) environment variable
-#      Examples:
+#      Chaincarts:
 #      a) FABRIC_CA_SERVER_PORT=443
 #         To set the listening port
 #      b) FABRIC_CA_SERVER_CA_KEYFILE="../mykey.pem"
@@ -80,7 +80,7 @@ tls:
 #############################################################################
 ca:
   # Name of this CA
-  name: Org1CA
+  name: AmazonCA
   # Key file (is only used to import a private key into BCCSP)
   keyfile:
   # Certificate file (default: ca-cert.pem)
@@ -237,17 +237,18 @@ ldap:
 # which are always stored in lower case.
 #############################################################################
 affiliations:
-   org1:
+   platform:
       - department1
       - department2
-   org2:
+   flipkart:
       - department1
-   org3:
+   amazon:
       - department1
-   org4:
+   myntra:
       - department1
-   org5:
+   tataneu:
       - department1
+
 #############################################################################
 #  Signing section
 #
@@ -295,7 +296,7 @@ signing:
 #  15 years in hours.
 #  The pathlength field is used to limit CA certificate hierarchy as described
 #  in section 4.2.1.9 of RFC 5280.
-#  Examples:
+#  Chaincarts:
 #  1) No pathlength value means no limit is requested.
 #  2) pathlength == 1 means a limit of 1 is requested which is the default for
 #     a root CA.  This means the root CA can issue intermediate CA certificates,
@@ -306,16 +307,16 @@ signing:
 #     CA certificates though it can still issue end entity certificates.
 ###########################################################################
 csr:
-   cn: ca.org1.chaincart.com
+   cn: ca.amazon.chaincart.com
    names:
-      - C: US
-        ST: "North Carolina"
-        L: "Durham"
-        O: org1.chaincart.com
+      - C: UK
+        ST: "Hampshire"
+        L: "Hursley"
+        O: amazon.chaincart.com
         OU:
    hosts:
      - localhost
-     - org1.chaincart.com
+     - amazon.chaincart.com
    ca:
       expiry: 131400h
       pathlength: 1
@@ -352,7 +353,7 @@ bccsp:
 # config file in this list MAY contain all of the same elements as are found in
 # the server config file except port, debug, and tls sections.
 #
-# Examples:
+# Chaincarts:
 # fabric-ca-server start -b admin:adminpw --cacount 2
 #
 # fabric-ca-server start -b admin:adminpw --cafiles ca/ca1/fabric-ca-server-config.yaml

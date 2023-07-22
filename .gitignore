@@ -3,8 +3,8 @@
 /ledgers
 /ledgers-backup
 /channel-artifacts/*.json
-/org3-artifacts/crypto-config/*
-organizations/fabric-ca/ordererOrg/*
+/amazon-artifacts/crypto-config/*
+# organizations/fabric-ca/ordererOrg/*
 organizations/ordererOrganizations/*
 organizations/peerOrganizations/*
 system-genesis-block/*

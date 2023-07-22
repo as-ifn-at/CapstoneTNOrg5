@@ -44,15 +44,15 @@ Organizations:
         OrdererEndpoints:
             - orderer.chaincart.com:7050
 
-    - &Org1
+    - &Platform
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: Org1MSP
+        Name: PlatformMSP
 
         # ID to load the MSP definition as
-        ID: Org1MSP
+        ID: PlatformMSP
 
-        MSPDir: ../organizations/peerOrganizations/org1.chaincart.com/msp
+        MSPDir: ../organizations/peerOrganizations/platform.chaincart.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -60,26 +60,26 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('Org1MSP.admin', 'Org1MSP.peer', 'Org1MSP.client')"
+                Rule: "OR('PlatformMSP.admin', 'PlatformMSP.peer', 'PlatformMSP.client')"
             Writers:
                 Type: Signature
-                Rule: "OR('Org1MSP.admin', 'Org1MSP.client')"
+                Rule: "OR('PlatformMSP.admin', 'PlatformMSP.client')"
             Admins:
                 Type: Signature
-                Rule: "OR('Org1MSP.admin')"
+                Rule: "OR('PlatformMSP.admin')"
             Endorsement:
                 Type: Signature
-                Rule: "OR('Org1MSP.peer')"
+                Rule: "OR('PlatformMSP.peer')"
 
-    - &Org2
+    - &Flipkart
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: Org2MSP
+        Name: FlipkartMSP
 
         # ID to load the MSP definition as
-        ID: Org2MSP
+        ID: FlipkartMSP
 
-        MSPDir: ../organizations/peerOrganizations/org2.chaincart.com/msp
+        MSPDir: ../organizations/peerOrganizations/flipkart.chaincart.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -87,26 +87,26 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('Org2MSP.admin', 'Org2MSP.peer', 'Org2MSP.client')"
+                Rule: "OR('FlipkartMSP.admin', 'FlipkartMSP.peer', 'FlipkartMSP.client')"
             Writers:
                 Type: Signature
-                Rule: "OR('Org2MSP.admin', 'Org2MSP.client')"
+                Rule: "OR('FlipkartMSP.admin', 'FlipkartMSP.client')"
             Admins:
                 Type: Signature
-                Rule: "OR('Org2MSP.admin')"
+                Rule: "OR('FlipkartMSP.admin')"
             Endorsement:
                 Type: Signature
-                Rule: "OR('Org2MSP.peer')"
+                Rule: "OR('FlipkartMSP.peer')"
 
-    - &Org3
+    - &Amazon
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: Org3MSP
+        Name: AmazonMSP
 
         # ID to load the MSP definition as
-        ID: Org3MSP
+        ID: AmazonMSP
 
-        MSPDir: ../organizations/peerOrganizations/org3.chaincart.com/msp
+        MSPDir: ../organizations/peerOrganizations/amazon.chaincart.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -114,26 +114,26 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('Org3MSP.admin', 'Org3MSP.peer', 'Org3MSP.client')"
+                Rule: "OR('AmazonMSP.admin', 'AmazonMSP.peer', 'AmazonMSP.client')"
             Writers:
                 Type: Signature
-                Rule: "OR('Org3MSP.admin', 'Org3MSP.client')"
+                Rule: "OR('AmazonMSP.admin', 'AmazonMSP.client')"
             Admins:
                 Type: Signature
-                Rule: "OR('Org3MSP.admin')"
+                Rule: "OR('AmazonMSP.admin')"
             Endorsement:
                 Type: Signature
-                Rule: "OR('Org3MSP.peer')"
+                Rule: "OR('AmazonMSP.peer')"
 
-    - &Org4
+    - &Myntra
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: Org4MSP
+        Name: MyntraMSP
 
         # ID to load the MSP definition as
-        ID: Org4MSP
+        ID: MyntraMSP
 
-        MSPDir: ../organizations/peerOrganizations/org4.chaincart.com/msp
+        MSPDir: ../organizations/peerOrganizations/myntra.chaincart.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -141,26 +141,26 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('Org4MSP.admin', 'Org4MSP.peer', 'Org4MSP.client')"
+                Rule: "OR('MyntraMSP.admin', 'MyntraMSP.peer', 'MyntraMSP.client')"
             Writers:
                 Type: Signature
-                Rule: "OR('Org4MSP.admin', 'Org4MSP.client')"
+                Rule: "OR('MyntraMSP.admin', 'MyntraMSP.client')"
             Admins:
                 Type: Signature
-                Rule: "OR('Org4MSP.admin')"
+                Rule: "OR('MyntraMSP.admin')"
             Endorsement:
                 Type: Signature
-                Rule: "OR('Org4MSP.peer')"
+                Rule: "OR('MyntraMSP.peer')"
 
-    - &Org5
+    - &Tataneu
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: Org5MSP
+        Name: TataneuMSP
 
         # ID to load the MSP definition as
-        ID: Org5MSP
+        ID: TataneuMSP
 
-        MSPDir: ../organizations/peerOrganizations/org5.chaincart.com/msp
+        MSPDir: ../organizations/peerOrganizations/tataneu.chaincart.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -168,16 +168,16 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('Org5MSP.admin', 'Org5MSP.peer', 'Org5MSP.client')"
+                Rule: "OR('TataneuMSP.admin', 'TataneuMSP.peer', 'TataneuMSP.client')"
             Writers:
                 Type: Signature
-                Rule: "OR('Org5MSP.admin', 'Org5MSP.client')"
+                Rule: "OR('TataneuMSP.admin', 'TataneuMSP.client')"
             Admins:
                 Type: Signature
-                Rule: "OR('Org5MSP.admin')"
+                Rule: "OR('TataneuMSP.admin')"
             Endorsement:
                 Type: Signature
-                Rule: "OR('Org5MSP.peer')"
+                Rule: "OR('TataneuMSP.peer')"
 
 ################################################################################
 #
@@ -390,9 +390,9 @@ Profiles:
         Application:
             <<: *ApplicationDefaults
             Organizations:
-                - *Org1
-                - *Org2
-                - *Org3
-                - *Org4
-                - *Org5
+                - *Platform
+                - *Flipkart
+                - *Amazon
+                - *Myntra
+                - *Tataneu
             Capabilities: *ApplicationCapabilities

@@ -8,10 +8,10 @@
 # ---------------------------------------------------------------------------
 PeerOrgs:
   # ---------------------------------------------------------------------------
-  # Org2
+  # Flipkart
   # ---------------------------------------------------------------------------
-  - Name: Org2
-    Domain: org2.chaincart.com
+  - Name: Flipkart
+    Domain: flipkart.chaincart.com
     EnableNodeOUs: true
     # ---------------------------------------------------------------------------
     # "Specs"
@@ -30,8 +30,8 @@ PeerOrgs:
     #                 Org.Domain, respectively.
     # ---------------------------------------------------------------------------
     # Specs:
-    #   - Hostname: foo # implicitly "foo.org1.chaincart.com"
-    #     CommonName: foo27.org5.chaincart.com # overrides Hostname-based FQDN set above
+    #   - Hostname: foo # implicitly "foo.platform.chaincart.com"
+    #     CommonName: foo27.tataneu.chaincart.com # overrides Hostname-based FQDN set above
     #   - Hostname: bar
     #   - Hostname: baz
     # ---------------------------------------------------------------------------

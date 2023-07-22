@@ -80,7 +80,7 @@ tls:
 #############################################################################
 ca:
   # Name of this CA
-  name: Org4CA
+  name: MyntraCA
   # Key file (is only used to import a private key into BCCSP)
   keyfile:
   # Certificate file (default: ca-cert.pem)
@@ -237,16 +237,16 @@ ldap:
 # which are always stored in lower case.
 #############################################################################
 affiliations:
-   org1:
+   platform:
       - department1
       - department2
-   org2:
+   flipkart:
       - department1
-   org3:
+   amazon:
       - department1
-   org4:
+   myntra:
       - department1
-   org5:
+   tataneu:
       - department1
 
 #############################################################################
@@ -307,16 +307,16 @@ signing:
 #     CA certificates though it can still issue end entity certificates.
 ###########################################################################
 csr:
-   cn: ca.org4.chaincart.com
+   cn: ca.myntra.chaincart.com
    names:
       - C: UK
         ST: "Hampshire"
         L: "Hursley"
-        O: org4.chaincart.com
+        O: myntra.chaincart.com
         OU:
    hosts:
      - localhost
-     - org4.chaincart.com
+     - myntra.chaincart.com
    ca:
       expiry: 131400h
       pathlength: 1

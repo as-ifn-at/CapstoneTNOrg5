@@ -92,27 +92,27 @@ createChannel
 successln "Channel '$CHANNEL_NAME' created"
 
 ## Join all the peers to the channel
-infoln "Joining org1 peer to the channel..."
+infoln "Joining platform peer to the channel..."
 joinChannel 1
-infoln "Joining org2 peer to the channel..."
+infoln "Joining flipkart peer to the channel..."
 joinChannel 2
-infoln "Joining org3 peer to the channel..."
+infoln "Joining amazon peer to the channel..."
 joinChannel 3
-infoln "Joining org4 peer to the channel..."
+infoln "Joining myntra peer to the channel..."
 joinChannel 4
-infoln "Joining org5 peer to the channel..."
+infoln "Joining tataneu peer to the channel..."
 joinChannel 5
 
 ## Set the anchor peers for each org in the channel
-infoln "Setting anchor peer for org1..."
+infoln "Setting anchor peer for platform..."
 setAnchorPeer 1
-infoln "Setting anchor peer for org2..."
+infoln "Setting anchor peer for flipkart..."
 setAnchorPeer 2
-infoln "Setting anchor peer for org3..."
+infoln "Setting anchor peer for amazon..."
 setAnchorPeer 3
-infoln "Setting anchor peer for org4..."
+infoln "Setting anchor peer for myntra..."
 setAnchorPeer 4
-infoln "Setting anchor peer for org5..."
+infoln "Setting anchor peer for tataneu..."
 setAnchorPeer 5
 
 successln "Channel '$CHANNEL_NAME' joined"

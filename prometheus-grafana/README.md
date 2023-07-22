@@ -35,8 +35,8 @@ Brings up
 
 Fabric metrics targets:
 
-- `peer0.org1.chaincart.com:9444`
-- `peer0.org2.chaincart.com:9445`
+- `peer0.platform.chaincart.com:9444`
+- `peer0.flipkart.chaincart.com:9445`
 - `orderer.chaincart.com:9443`
 
 System and docker metrics targets:

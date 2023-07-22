@@ -1,32 +1,32 @@
 ---
-name: test-network-org${ORG}
+name: test-network-${ORG}
 version: 1.0.0
 client:
-  organization: Org${ORG}
+  organization: ${ORGM}
   connection:
     timeout:
       peer:
         endorser: '300'
 organizations:
-  Org${ORG}:
-    mspid: Org${ORG}MSP
+  ${ORGM}:
+    mspid: ${ORGM}MSP
     peers:
-    - peer0.org${ORG}.chaincart.com
+    - peer0.${ORG}.chaincart.com
     certificateAuthorities:
-    - ca.org${ORG}.chaincart.com
+    - ca.${ORG}.chaincart.com
 peers:
-  peer0.org${ORG}.chaincart.com:
+  peer0.${ORG}.chaincart.com:
     url: grpcs://localhost:${P0PORT}
     tlsCACerts:
       pem: |
           ${PEERPEM}
     grpcOptions:
-      ssl-target-name-override: peer0.org${ORG}.chaincart.com
-      hostnameOverride: peer0.org${ORG}.chaincart.com
+      ssl-target-name-override: peer0.${ORG}.chaincart.com
+      hostnameOverride: peer0.${ORG}.chaincart.com
 certificateAuthorities:
   ca.org${ORG}.chaincart.com:
     url: https://localhost:${CAPORT}
-    caName: ca-org${ORG}
+    caName: ca-${ORG}
     tlsCACerts:
       pem: 
         - |

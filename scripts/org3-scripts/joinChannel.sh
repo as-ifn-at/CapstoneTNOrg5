@@ -6,9 +6,9 @@
 #
 
 # This script is designed to be run in the cli container as the
-# second step of the EYFN tutorial. It joins the org3 peers to the
+# second step of the EYFN tutorial. It joins the amazon peers to the
 # channel previously setup in the BYFN tutorial and install the
-# chaincode as version 2.0 on peer0.org3.
+# chaincode as version 2.0 on peer0.amazon.
 #
 
 CHANNEL_NAME="$1"
@@ -60,11 +60,11 @@ res=$?
 cat log.txt
 verifyResult $res "Fetching config block from orderer has failed"
 
-infoln "Joining org3 peer to the channel..."
+infoln "Joining amazon peer to the channel..."
 joinChannel 3
 
-infoln "Setting anchor peer for org3..."
+infoln "Setting anchor peer for amazon..."
 setAnchorPeer 3
 
 successln "Channel '$CHANNEL_NAME' joined"
-successln "Org3 peer successfully added to network"
+successln "Amazon peer successfully added to network"

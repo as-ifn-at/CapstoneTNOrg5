@@ -5,68 +5,75 @@ function one_line_pem {
 }
 
 function json_ccp {
-    local PP=$(one_line_pem $4)
-    local CP=$(one_line_pem $5)
+    local PP=$(one_line_pem $5)
+    local CP=$(one_line_pem $6)
     sed -e "s/\${ORG}/$1/" \
-        -e "s/\${P0PORT}/$2/" \
-        -e "s/\${CAPORT}/$3/" \
+        -e "s/\${ORGM}/$2/" \
+        -e "s/\${P0PORT}/$3/" \
+        -e "s/\${CAPORT}/$4/" \
         -e "s#\${PEERPEM}#$PP#" \
         -e "s#\${CAPEM}#$CP#" \
         organizations/ccp-template.json
 }
 
 function yaml_ccp {
-    local PP=$(one_line_pem $4)
-    local CP=$(one_line_pem $5)
+    local PP=$(one_line_pem $5)
+    local CP=$(one_line_pem $6)
     sed -e "s/\${ORG}/$1/" \
-        -e "s/\${P0PORT}/$2/" \
-        -e "s/\${CAPORT}/$3/" \
+        -e "s/\${ORGM}/$2/" \
+        -e "s/\${P0PORT}/$3/" \
+        -e "s/\${CAPORT}/$4/" \
         -e "s#\${PEERPEM}#$PP#" \
         -e "s#\${CAPEM}#$CP#" \
         organizations/ccp-template.yaml | sed -e $'s/\\\\n/\\\n          /g'
 }
 
-ORG=1
+ORG="platform"
+ORGM="Platform"
 P0PORT=7051
 CAPORT=7054
-PEERPEM=organizations/peerOrganizations/org1.chaincart.com/tlsca/tlsca.org1.chaincart.com-cert.pem
-CAPEM=organizations/peerOrganizations/org1.chaincart.com/ca/ca.org1.chaincart.com-cert.pem
+PEERPEM=organizations/peerOrganizations/platform.chaincart.com/tlsca/tlsca.platform.chaincart.com-cert.pem
+CAPEM=organizations/peerOrganizations/platform.chaincart.com/ca/ca.platform.chaincart.com-cert.pem
 
-echo "$(json_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/org1.chaincart.com/connection-org1.json
-echo "$(yaml_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/org1.chaincart.com/connection-org1.yaml
+echo "$(json_ccp $ORG $ORGM $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/platform.chaincart.com/connection-platform.json
+echo "$(yaml_ccp $ORG $ORGM $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/platform.chaincart.com/connection-platform.yaml
 
-ORG=2
+ORG="flipkart"
+ORGM="Flipkart"
 P0PORT=9051
 CAPORT=8054
-PEERPEM=organizations/peerOrganizations/org2.chaincart.com/tlsca/tlsca.org2.chaincart.com-cert.pem
-CAPEM=organizations/peerOrganizations/org2.chaincart.com/ca/ca.org2.chaincart.com-cert.pem
+PEERPEM=organizations/peerOrganizations/flipkart.chaincart.com/tlsca/tlsca.flipkart.chaincart.com-cert.pem
+CAPEM=organizations/peerOrganizations/flipkart.chaincart.com/ca/ca.flipkart.chaincart.com-cert.pem
 
-echo "$(json_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/org2.chaincart.com/connection-org2.json
-echo "$(yaml_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/org2.chaincart.com/connection-org2.yaml
+echo "$(json_ccp $ORG $ORGM $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/flipkart.chaincart.com/connection-flipkart.json
+echo "$(yaml_ccp $ORG $ORGM $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/flipkart.chaincart.com/connection-flipkart.yaml
 
-ORG=3
+ORG="amazon"
+ORGM="Amazon"
 P0PORT=11051
 CAPORT=11154
-PEERPEM=organizations/peerOrganizations/org3.chaincart.com/tlsca/tlsca.org3.chaincart.com-cert.pem
-CAPEM=organizations/peerOrganizations/org3.chaincart.com/ca/ca.org3.chaincart.com-cert.pem
+PEERPEM=organizations/peerOrganizations/amazon.chaincart.com/tlsca/tlsca.amazon.chaincart.com-cert.pem
+CAPEM=organizations/peerOrganizations/amazon.chaincart.com/ca/ca.amazon.chaincart.com-cert.pem
 
-echo "$(json_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/org3.chaincart.com/connection-org3.json
-echo "$(yaml_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/org3.chaincart.com/connection-org3.yaml
+echo "$(json_ccp $ORG $ORGM $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/amazon.chaincart.com/connection-amazon.json
+echo "$(yaml_ccp $ORG $ORGM $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/amazon.chaincart.com/connection-amazon.yaml
 
-ORG=4
+ORG="myntra"
+ORGM="Myntra"
 P0PORT=13051
 CAPORT=10054
-PEERPEM=organizations/peerOrganizations/org4.chaincart.com/tlsca/tlsca.org4.chaincart.com-cert.pem
-CAPEM=organizations/peerOrganizations/org4.chaincart.com/ca/ca.org4.chaincart.com-cert.pem
+PEERPEM=organizations/peerOrganizations/myntra.chaincart.com/tlsca/tlsca.myntra.chaincart.com-cert.pem
+CAPEM=organizations/peerOrganizations/myntra.chaincart.com/ca/ca.myntra.chaincart.com-cert.pem
 
-echo "$(json_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/org4.chaincart.com/connection-org4.json
-echo "$(yaml_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/org4.chaincart.com/connection-org4.yaml
+echo "$(json_ccp $ORG $ORGM $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/myntra.chaincart.com/connection-myntra.json
+echo "$(yaml_ccp $ORG $ORGM $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/myntra.chaincart.com/connection-myntra.yaml
 
-ORG=5
+ORG="tataneu"
+ORGM="Tataneu"
 P0PORT=15051
 CAPORT=11054
-PEERPEM=organizations/peerOrganizations/org5.chaincart.com/tlsca/tlsca.org5.chaincart.com-cert.pem
-CAPEM=organizations/peerOrganizations/org5.chaincart.com/ca/ca.org5.chaincart.com-cert.pem
+PEERPEM=organizations/peerOrganizations/tataneu.chaincart.com/tlsca/tlsca.tataneu.chaincart.com-cert.pem
+CAPEM=organizations/peerOrganizations/tataneu.chaincart.com/ca/ca.tataneu.chaincart.com-cert.pem
 
-echo "$(json_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/org5.chaincart.com/connection-org5.json
-echo "$(yaml_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/org5.chaincart.com/connection-org5.yaml
+echo "$(json_ccp $ORG $ORGM $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/tataneu.chaincart.com/connection-tataneu.json
+echo "$(yaml_ccp $ORG $ORGM $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/tataneu.chaincart.com/connection-tataneu.yaml

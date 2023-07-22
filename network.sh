@@ -150,20 +150,20 @@ function createOrgs() {
     fi
     infoln "Generating certificates using cryptogen tool"
 
-    infoln "Creating Org1 Identities"
+    infoln "Creating Platform Identities"
 
     set -x
-    cryptogen generate --config=./organizations/cryptogen/crypto-config-org1.yaml --output="organizations"
+    cryptogen generate --config=./organizations/cryptogen/crypto-config-platform.yaml --output="organizations"
     res=$?
     { set +x; } 2>/dev/null
     if [ $res -ne 0 ]; then
       fatalln "Failed to generate certificates..."
     fi
 
-    infoln "Creating Org2 Identities"
+    infoln "Creating Flipkart Identities"
 
     set -x
-    cryptogen generate --config=./organizations/cryptogen/crypto-config-org2.yaml --output="organizations"
+    cryptogen generate --config=./organizations/cryptogen/crypto-config-flipkart.yaml --output="organizations"
     res=$?
     { set +x; } 2>/dev/null
     if [ $res -ne 0 ]; then
@@ -191,32 +191,32 @@ function createOrgs() {
 
     while :
     do
-      if [ ! -f "organizations/fabric-ca/org1/tls-cert.pem" ]; then
+      if [ ! -f "organizations/fabric-ca/platform/tls-cert.pem" ]; then
         sleep 1
       else
         break
       fi
     done
 
-    infoln "Creating Org1 Identities"
+    infoln "Creating Platform Identities"
 
-    createOrg1
+    createPlatform
 
-    infoln "Creating Org2 Identities"
+    infoln "Creating Flipkart Identities"
 
-    createOrg2
+    createFlipkart
 
-    infoln "Creating Org3 Identities"
+    infoln "Creating Amazon Identities"
 
-    createOrg3
+    createAmazon
 
-    infoln "Creating Org4 Identities"
+    infoln "Creating Myntra Identities"
 
-    createOrg4
+    createMyntra
 
-    infoln "Creating Org5 Identities"
+    infoln "Creating Tataneu Identities"
 
-    createOrg5
+    createTataneu
 
     infoln "Creating Orderer Org Identities"
 
@@ -224,7 +224,7 @@ function createOrgs() {
 
   fi
 
-  infoln "Generating CCP files for Org1, Org2, Org3, Org4 and Org5"
+  infoln "Generating CCP files for Platform, Flipkart, Amazon, Myntra and Tataneu"
   ./organizations/ccp-generate.sh
 }
 
@@ -277,7 +277,7 @@ function networkUp() {
   fi
 }
 
-# call the script to create the channel, join the peers of org1 and org2,
+# call the script to create the channel, join the peers of platform and flipkart,
 # and then update the anchor peers for each organization
 function createChannel() {
   # Bring up the network if it is not already up.
@@ -335,16 +335,16 @@ function networkDown() {
   COMPOSE_CA_FILES="-f compose/${COMPOSE_FILE_CA} -f compose/${CONTAINER_CLI}/${CONTAINER_CLI}-${COMPOSE_FILE_CA}"
   COMPOSE_FILES="${COMPOSE_BASE_FILES} ${COMPOSE_COUCH_FILES} ${COMPOSE_CA_FILES}"
 
-  # stop org3 containers also in addition to org1 and org2, in case we were running sample to add org3
-  COMPOSE_ORG3_BASE_FILES="-f addOrg3/compose/${COMPOSE_FILE_ORG3_BASE} -f addOrg3/compose/${CONTAINER_CLI}/${CONTAINER_CLI}-${COMPOSE_FILE_ORG3_BASE}"
-  COMPOSE_ORG3_COUCH_FILES="-f addOrg3/compose/${COMPOSE_FILE_ORG3_COUCH} -f addOrg3/compose/${CONTAINER_CLI}/${CONTAINER_CLI}-${COMPOSE_FILE_ORG3_COUCH}"
-  COMPOSE_ORG3_CA_FILES="-f addOrg3/compose/${COMPOSE_FILE_ORG3_CA} -f addOrg3/compose/${CONTAINER_CLI}/${CONTAINER_CLI}-${COMPOSE_FILE_ORG3_CA}"
-  COMPOSE_ORG3_FILES="${COMPOSE_ORG3_BASE_FILES} ${COMPOSE_ORG3_COUCH_FILES} ${COMPOSE_ORG3_CA_FILES}"
+  # stop amazon containers also in addition to platform and flipkart, in case we were running sample to add amazon
+  COMPOSE_AMAZON_BASE_FILES="-f addAmazon/compose/${COMPOSE_FILE_AMAZON_BASE} -f addAmazon/compose/${CONTAINER_CLI}/${CONTAINER_CLI}-${COMPOSE_FILE_AMAZON_BASE}"
+  COMPOSE_AMAZON_COUCH_FILES="-f addAmazon/compose/${COMPOSE_FILE_AMAZON_COUCH} -f addAmazon/compose/${CONTAINER_CLI}/${CONTAINER_CLI}-${COMPOSE_FILE_AMAZON_COUCH}"
+  COMPOSE_AMAZON_CA_FILES="-f addAmazon/compose/${COMPOSE_FILE_AMAZON_CA} -f addAmazon/compose/${CONTAINER_CLI}/${CONTAINER_CLI}-${COMPOSE_FILE_AMAZON_CA}"
+  COMPOSE_AMAZON_FILES="${COMPOSE_AMAZON_BASE_FILES} ${COMPOSE_AMAZON_COUCH_FILES} ${COMPOSE_AMAZON_CA_FILES}"
 
   if [ "${CONTAINER_CLI}" == "docker" ]; then
-    DOCKER_SOCK=$DOCKER_SOCK ${CONTAINER_CLI_COMPOSE} ${COMPOSE_FILES} ${COMPOSE_ORG3_FILES} down --volumes --remove-orphans
+    DOCKER_SOCK=$DOCKER_SOCK ${CONTAINER_CLI_COMPOSE} ${COMPOSE_FILES} ${COMPOSE_AMAZON_FILES} down --volumes --remove-orphans
   elif [ "${CONTAINER_CLI}" == "podman" ]; then
-    ${CONTAINER_CLI_COMPOSE} ${COMPOSE_FILES} ${COMPOSE_ORG3_FILES} down --volumes
+    ${CONTAINER_CLI_COMPOSE} ${COMPOSE_FILES} ${COMPOSE_AMAZON_FILES} down --volumes
   else
     fatalln "Container CLI  ${CONTAINER_CLI} not supported"
   fi
@@ -353,7 +353,7 @@ function networkDown() {
   # Don't remove the generated artifacts -- note, the ledgers are always removed
   if [ "$MODE" != "restart" ]; then
     # Bring down the network, deleting the volumes
-    ${CONTAINER_CLI} volume rm docker_orderer.chaincart.com docker_peer0.org1.chaincart.com docker_peer0.org2.chaincart.com docker_peer0.org3.chaincart.com docker_peer0.org4.chaincart.com docker_peer0.org5.chaincart.com
+    ${CONTAINER_CLI} volume rm docker_orderer.chaincart.com docker_peer0.platform.chaincart.com docker_peer0.flipkart.chaincart.com docker_peer0.amazon.chaincart.com docker_peer0.myntra.chaincart.com docker_peer0.tataneu.chaincart.com
     #Cleanup the chaincode containers
     clearContainers
     #Cleanup images
@@ -361,13 +361,13 @@ function networkDown() {
     # remove orderer block and other channel configuration transactions and certs
     ${CONTAINER_CLI} run --rm -v "$(pwd):/data" busybox sh -c 'cd /data && rm -rf system-genesis-block/*.block organizations/peerOrganizations organizations/ordererOrganizations'
     ## remove fabric ca artifacts
-    ${CONTAINER_CLI} run --rm -v "$(pwd):/data" busybox sh -c 'cd /data && rm -rf organizations/fabric-ca/org1/msp organizations/fabric-ca/org1/tls-cert.pem organizations/fabric-ca/org1/ca-cert.pem organizations/fabric-ca/org1/IssuerPublicKey organizations/fabric-ca/org1/IssuerRevocationPublicKey organizations/fabric-ca/org1/fabric-ca-server.db'
-    ${CONTAINER_CLI} run --rm -v "$(pwd):/data" busybox sh -c 'cd /data && rm -rf organizations/fabric-ca/org2/msp organizations/fabric-ca/org2/tls-cert.pem organizations/fabric-ca/org2/ca-cert.pem organizations/fabric-ca/org2/IssuerPublicKey organizations/fabric-ca/org2/IssuerRevocationPublicKey organizations/fabric-ca/org2/fabric-ca-server.db'
-    ${CONTAINER_CLI} run --rm -v "$(pwd):/data" busybox sh -c 'cd /data && rm -rf organizations/fabric-ca/org3/msp organizations/fabric-ca/org3/tls-cert.pem organizations/fabric-ca/org3/ca-cert.pem organizations/fabric-ca/org3/IssuerPublicKey organizations/fabric-ca/org3/IssuerRevocationPublicKey organizations/fabric-ca/org3/fabric-ca-server.db'
-    ${CONTAINER_CLI} run --rm -v "$(pwd):/data" busybox sh -c 'cd /data && rm -rf organizations/fabric-ca/org4/msp organizations/fabric-ca/org4/tls-cert.pem organizations/fabric-ca/org4/ca-cert.pem organizations/fabric-ca/org4/IssuerPublicKey organizations/fabric-ca/org4/IssuerRevocationPublicKey organizations/fabric-ca/org4/fabric-ca-server.db'
-    ${CONTAINER_CLI} run --rm -v "$(pwd):/data" busybox sh -c 'cd /data && rm -rf organizations/fabric-ca/org5/msp organizations/fabric-ca/org5/tls-cert.pem organizations/fabric-ca/org5/ca-cert.pem organizations/fabric-ca/org5/IssuerPublicKey organizations/fabric-ca/org5/IssuerRevocationPublicKey organizations/fabric-ca/org5/fabric-ca-server.db'
+    ${CONTAINER_CLI} run --rm -v "$(pwd):/data" busybox sh -c 'cd /data && rm -rf organizations/fabric-ca/platform/msp organizations/fabric-ca/platform/tls-cert.pem organizations/fabric-ca/platform/ca-cert.pem organizations/fabric-ca/platform/IssuerPublicKey organizations/fabric-ca/platform/IssuerRevocationPublicKey organizations/fabric-ca/platform/fabric-ca-server.db'
+    ${CONTAINER_CLI} run --rm -v "$(pwd):/data" busybox sh -c 'cd /data && rm -rf organizations/fabric-ca/flipkart/msp organizations/fabric-ca/flipkart/tls-cert.pem organizations/fabric-ca/flipkart/ca-cert.pem organizations/fabric-ca/flipkart/IssuerPublicKey organizations/fabric-ca/flipkart/IssuerRevocationPublicKey organizations/fabric-ca/flipkart/fabric-ca-server.db'
+    ${CONTAINER_CLI} run --rm -v "$(pwd):/data" busybox sh -c 'cd /data && rm -rf organizations/fabric-ca/amazon/msp organizations/fabric-ca/amazon/tls-cert.pem organizations/fabric-ca/amazon/ca-cert.pem organizations/fabric-ca/amazon/IssuerPublicKey organizations/fabric-ca/amazon/IssuerRevocationPublicKey organizations/fabric-ca/amazon/fabric-ca-server.db'
+    ${CONTAINER_CLI} run --rm -v "$(pwd):/data" busybox sh -c 'cd /data && rm -rf organizations/fabric-ca/myntra/msp organizations/fabric-ca/myntra/tls-cert.pem organizations/fabric-ca/myntra/ca-cert.pem organizations/fabric-ca/myntra/IssuerPublicKey organizations/fabric-ca/myntra/IssuerRevocationPublicKey organizations/fabric-ca/myntra/fabric-ca-server.db'
+    ${CONTAINER_CLI} run --rm -v "$(pwd):/data" busybox sh -c 'cd /data && rm -rf organizations/fabric-ca/tataneu/msp organizations/fabric-ca/tataneu/tls-cert.pem organizations/fabric-ca/tataneu/ca-cert.pem organizations/fabric-ca/tataneu/IssuerPublicKey organizations/fabric-ca/tataneu/IssuerRevocationPublicKey organizations/fabric-ca/tataneu/fabric-ca-server.db'
     ${CONTAINER_CLI} run --rm -v "$(pwd):/data" busybox sh -c 'cd /data && rm -rf organizations/fabric-ca/ordererOrg/msp organizations/fabric-ca/ordererOrg/tls-cert.pem organizations/fabric-ca/ordererOrg/ca-cert.pem organizations/fabric-ca/ordererOrg/IssuerPublicKey organizations/fabric-ca/ordererOrg/IssuerRevocationPublicKey organizations/fabric-ca/ordererOrg/fabric-ca-server.db'
-    ${CONTAINER_CLI} run --rm -v "$(pwd):/data" busybox sh -c 'cd /data && rm -rf addOrg3/fabric-ca/org3/msp addOrg3/fabric-ca/org3/tls-cert.pem addOrg3/fabric-ca/org3/ca-cert.pem addOrg3/fabric-ca/org3/IssuerPublicKey addOrg3/fabric-ca/org3/IssuerRevocationPublicKey addOrg3/fabric-ca/org3/fabric-ca-server.db'
+    ${CONTAINER_CLI} run --rm -v "$(pwd):/data" busybox sh -c 'cd /data && rm -rf addAmazon/fabric-ca/amazon/msp addAmazon/fabric-ca/amazon/tls-cert.pem addAmazon/fabric-ca/amazon/ca-cert.pem addAmazon/fabric-ca/amazon/IssuerPublicKey addAmazon/fabric-ca/amazon/IssuerRevocationPublicKey addAmazon/fabric-ca/amazon/fabric-ca-server.db'
     # remove channel and script artifacts
     ${CONTAINER_CLI} run --rm -v "$(pwd):/data" busybox sh -c 'cd /data && rm -rf channel-artifacts log.txt *.tar.gz'
   fi
@@ -398,12 +398,12 @@ COMPOSE_FILE_BASE=compose-test-net.yaml
 COMPOSE_FILE_COUCH=compose-couch.yaml
 # certificate authorities compose file
 COMPOSE_FILE_CA=compose-ca.yaml
-# use this as the default docker-compose yaml definition for org3
-COMPOSE_FILE_ORG3_BASE=compose-org3.yaml
-# use this as the docker compose couch file for org3
-COMPOSE_FILE_ORG3_COUCH=compose-couch-org3.yaml
+# use this as the default docker-compose yaml definition for amazon
+COMPOSE_FILE_AMAZON_BASE=compose-amazon.yaml
+# use this as the docker compose couch file for amazon
+COMPOSE_FILE_AMAZON_COUCH=compose-couch-amazon.yaml
 # certificate authorities compose file
-COMPOSE_FILE_ORG3_CA=compose-ca-org3.yaml
+COMPOSE_FILE_AMAZON_CA=compose-ca-amazon.yaml
 #
 # chaincode language defaults to "NA"
 CC_SRC_LANGUAGE="NA"
