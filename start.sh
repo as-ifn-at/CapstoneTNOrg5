@@ -1,7 +1,8 @@
 #!/bin/bash
 # start test-network with couchdb as database
 
-channelname="mychannel"
+# import constants
+. constants.sh
 
 ./network.sh down && ./network.sh up createChannel -c ${channelname} -ca -s couchdb
 

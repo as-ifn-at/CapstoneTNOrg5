@@ -1,6 +1,6 @@
 #!/bin/bash
-packagename="basic"
-channelname="mychannel"
+# import constants
+. constants.sh
 
 echo "------------Package Chaincode-----------"
 cd chaincode-go && GO111MODULE=on go mod vendor
