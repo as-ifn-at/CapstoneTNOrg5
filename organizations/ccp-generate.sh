@@ -29,44 +29,44 @@ function yaml_ccp {
 ORG=1
 P0PORT=7051
 CAPORT=7054
-PEERPEM=organizations/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem
-CAPEM=organizations/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem
+PEERPEM=organizations/peerOrganizations/org1.chaincart.com/tlsca/tlsca.org1.chaincart.com-cert.pem
+CAPEM=organizations/peerOrganizations/org1.chaincart.com/ca/ca.org1.chaincart.com-cert.pem
 
-echo "$(json_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/org1.example.com/connection-org1.json
-echo "$(yaml_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/org1.example.com/connection-org1.yaml
+echo "$(json_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/org1.chaincart.com/connection-org1.json
+echo "$(yaml_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/org1.chaincart.com/connection-org1.yaml
 
 ORG=2
 P0PORT=9051
 CAPORT=8054
-PEERPEM=organizations/peerOrganizations/org2.example.com/tlsca/tlsca.org2.example.com-cert.pem
-CAPEM=organizations/peerOrganizations/org2.example.com/ca/ca.org2.example.com-cert.pem
+PEERPEM=organizations/peerOrganizations/org2.chaincart.com/tlsca/tlsca.org2.chaincart.com-cert.pem
+CAPEM=organizations/peerOrganizations/org2.chaincart.com/ca/ca.org2.chaincart.com-cert.pem
 
-echo "$(json_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/org2.example.com/connection-org2.json
-echo "$(yaml_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/org2.example.com/connection-org2.yaml
+echo "$(json_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/org2.chaincart.com/connection-org2.json
+echo "$(yaml_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/org2.chaincart.com/connection-org2.yaml
 
 ORG=3
 P0PORT=11051
 CAPORT=11154
-PEERPEM=organizations/peerOrganizations/org3.example.com/tlsca/tlsca.org3.example.com-cert.pem
-CAPEM=organizations/peerOrganizations/org3.example.com/ca/ca.org3.example.com-cert.pem
+PEERPEM=organizations/peerOrganizations/org3.chaincart.com/tlsca/tlsca.org3.chaincart.com-cert.pem
+CAPEM=organizations/peerOrganizations/org3.chaincart.com/ca/ca.org3.chaincart.com-cert.pem
 
-echo "$(json_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/org3.example.com/connection-org3.json
-echo "$(yaml_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/org3.example.com/connection-org3.yaml
+echo "$(json_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/org3.chaincart.com/connection-org3.json
+echo "$(yaml_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/org3.chaincart.com/connection-org3.yaml
 
 ORG=4
 P0PORT=13051
 CAPORT=10054
-PEERPEM=organizations/peerOrganizations/org4.example.com/tlsca/tlsca.org4.example.com-cert.pem
-CAPEM=organizations/peerOrganizations/org4.example.com/ca/ca.org4.example.com-cert.pem
+PEERPEM=organizations/peerOrganizations/org4.chaincart.com/tlsca/tlsca.org4.chaincart.com-cert.pem
+CAPEM=organizations/peerOrganizations/org4.chaincart.com/ca/ca.org4.chaincart.com-cert.pem
 
-echo "$(json_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/org4.example.com/connection-org4.json
-echo "$(yaml_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/org4.example.com/connection-org4.yaml
+echo "$(json_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/org4.chaincart.com/connection-org4.json
+echo "$(yaml_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/org4.chaincart.com/connection-org4.yaml
 
 ORG=5
 P0PORT=15051
 CAPORT=11054
-PEERPEM=organizations/peerOrganizations/org5.example.com/tlsca/tlsca.org5.example.com-cert.pem
-CAPEM=organizations/peerOrganizations/org5.example.com/ca/ca.org5.example.com-cert.pem
+PEERPEM=organizations/peerOrganizations/org5.chaincart.com/tlsca/tlsca.org5.chaincart.com-cert.pem
+CAPEM=organizations/peerOrganizations/org5.chaincart.com/ca/ca.org5.chaincart.com-cert.pem
 
-echo "$(json_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/org5.example.com/connection-org5.json
-echo "$(yaml_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/org5.example.com/connection-org5.yaml
+echo "$(json_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/org5.chaincart.com/connection-org5.json
+echo "$(yaml_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)" > organizations/peerOrganizations/org5.chaincart.com/connection-org5.yaml

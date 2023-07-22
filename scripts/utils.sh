@@ -27,7 +27,7 @@ function printHelp() {
     println "   \033[0;32mup\033[0m -ca -r -d -s -verbose"
     println "   \033[0;32mup createChannel\033[0m -ca -c -r -d -s -verbose"
     println
-    println " Examples:"
+    println " Chaincarts:"
     println "   network.sh up createChannel -ca -c mychannel -s couchdb "
   elif [ "$USAGE" == "createChannel" ]; then
     println "Usage: "
@@ -44,7 +44,7 @@ function printHelp() {
     println " Possible Mode and flag combinations"
     println "   \033[0;32mcreateChannel\033[0m -c -r -d -verbose"
     println
-    println " Examples:"
+    println " Chaincarts:"
     println "   network.sh createChannel -c channelName"
   elif [ "$USAGE" == "deployCC" ]; then
     println "Usage: "
@@ -66,7 +66,7 @@ function printHelp() {
     println " Possible Mode and flag combinations"
     println "   \033[0;32mdeployCC\033[0m -ccn -ccl -ccv -ccs -ccp -cci -r -d -verbose"
     println
-    println " Examples:"
+    println " Chaincarts:"
     println "   network.sh deployCC -ccn basic -ccp ../asset-transfer-basic/chaincode-javascript/ ./ -ccl javascript"
     println "   network.sh deployCC -ccn mychaincode -ccp ./user/mychaincode -ccv 1 -ccl javascript"
   elif [ "$USAGE" == "deployCCAAS" ]; then
@@ -89,7 +89,7 @@ function printHelp() {
     println " Possible Mode and flag combinations"
     println "   \033[0;32mdeployCC\033[0m -ccn -ccv -ccs -ccp -cci -r -d -verbose"
     println
-    println " Examples:"
+    println " Chaincarts:"
     println "   network.sh deployCCAAS  -ccn basicj -ccp ../asset-transfer-basic/chaincode-java"
     println "   network.sh deployCCAAS  -ccn basict -ccp ../asset-transfer-basic/chaincode-typescript -ccaasdocker false"  
   else
@@ -130,7 +130,7 @@ function printHelp() {
     println "   \033[0;32mcreateChannel\033[0m -c -r -d -verbose"
     println "   \033[0;32mdeployCC\033[0m -ccn -ccl -ccv -ccs -ccp -cci -r -d -verbose"
     println
-    println " Examples:"
+    println " Chaincarts:"
     println "   network.sh up createChannel -ca -c mychannel -s couchdb"
     println "   network.sh createChannel -c channelName"
     println "   network.sh deployCC -ccn basic -ccp ../asset-transfer-basic/chaincode-javascript/ -ccl javascript"

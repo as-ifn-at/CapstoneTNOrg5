@@ -59,8 +59,8 @@ To test things are working you can invoke the 'Contract Metadata' function. For 
 
 export CORE_PEER_TLS_ENABLED=true
 export CORE_PEER_LOCALMSPID="Org1MSP"
-export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem
-export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
+export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org1.chaincart.com/tlsca/tlsca.org1.chaincart.com-cert.pem
+export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org1.chaincart.com/users/Admin@org1.chaincart.com/msp
 export CORE_PEER_ADDRESS=localhost:7051
 export PATH=${PWD}/../bin:$PATH
 export FABRIC_CFG_PATH=${PWD}/../config
@@ -71,7 +71,7 @@ peer chaincode query -C mychannel -n basicts -c '{"Args":["org.hyperledger.fabri
 
 If you don't have `jq` installed omit `| jq`.  The metadata shows the details of the deployed contract and is JSON, so jq makes it easier to read.  You can repeat the above commands for org2 to confirm that is working.
 
-To run the Java example, change the `deployCCAAS` command as follows. This will create two new containers.
+To run the Java chaincart, change the `deployCCAAS` command as follows. This will create two new containers.
 
 ```bash
 ./network.sh deployCCAAS  -ccn basicj -ccp ../asset-transfer-basic/chaincode-java
@@ -144,13 +144,13 @@ docker build -f ../asset-transfer-basic/chaincode-java/Dockerfile -t basicj_ccaa
 
 You need to start the docker container.
 
-NodeJs for example, could be started like this
+NodeJs for chaincart, could be started like this
 
 ```bash
  docker run --rm -it -p 9229:9229 --name peer0org2_basic_ccaas --network fabric_test -e DEBUG=true -e CHAINCODE_SERVER_ADDRESS=0.0.0.0:9999 -e CHAINCODE_ID=basic_1.0:7c7dff5cdc43c77ccea028c422b3348c3c1fb5a26ace0077cf3cc627bd355ef0 -e CORE_CHAINCODE_ID_NAME=basic_1.0:7c7dff5cdc43c77ccea028c422b3348c3c1fb5a26ace0077cf3cc627bd355ef0 basic_ccaas_image:latest
 ```
 
-Java for example, could be started like this
+Java for chaincart, could be started like this
 
 ```bash
  docker run --rm -it --name peer0org1_basicj_ccaas -p 8000:8000 --network fabric_test -e DEBUG=true -e CHAINCODE_SERVER_ADDRESS=0.0.0.0:9999 -e CHAINCODE_ID=basicj_1.0:b014a03d8eb1898535e25b4dfeeb3f8244c9f07d91a06aec03e2d19174c45e4f -e CORE_CHAINCODE_ID_NAME=basicj_1.0:b014a03d8e
@@ -167,13 +167,13 @@ For all languages please note:
 For Node.js please note:
 
 - Port 9229 is forwarded however - this is the debug port used by Node.js
-- `-e DEBUG=true` will trigger the node runtime to be started in debug mode. This is encoded in the `docker/docker-entrypoint.sh` script - this is an example and you may wish to remove this in production images for security
+- `-e DEBUG=true` will trigger the node runtime to be started in debug mode. This is encoded in the `docker/docker-entrypoint.sh` script - this is an chaincart and you may wish to remove this in production images for security
 - If you are using typescript, ensure that the typescript has been compiled with sourcemaps, otherwise a debugger will struggle matching up the source code.
 
 For Java please note:
 
 - Port 800 is forwarded, the debug port for the JVM
-- `-e DEBUG=true` will trigger the node runtime to be started in debug mode. This is encoded in the `docker/docker-entrypoint.sh` script - this is an example and you may wish to remove this in production images for security
+- `-e DEBUG=true` will trigger the node runtime to be started in debug mode. This is encoded in the `docker/docker-entrypoint.sh` script - this is an chaincart and you may wish to remove this in production images for security
 - In the java command with the option to start the debugger is `java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=0.0.0.0:8000 -jar /chaincode.jar`   Note the `0.0.0.0` as the debug port needs to be bound to all network adapters so the debugger can be attached from outside the container
 
 ## Running with multiple peers
