@@ -10,10 +10,6 @@ import (
 	"github.com/hyperledger/fabric-contract-api-go/contractapi"
 )
 
-type ERC20TokenContract struct {
-	contractapi.Contract
-}
-
 // Define key names for options
 const nameKey = "name"
 const symbolKey = "symbol"

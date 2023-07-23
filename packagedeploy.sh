@@ -92,12 +92,12 @@ echo "------------Success-----------"
 
 peer lifecycle chaincode querycommitted --channelID ${channelname} --name ${packagename}
 
-# Invoke chaincode
+echo "-----Invoke chaincode----"
 
 peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.chaincart.com --tls --cafile "${PWD}/organizations/ordererOrganizations/chaincart.com/orderers/orderer.chaincart.com/msp/tlscacerts/tlsca.chaincart.com-cert.pem" -C mychannel -n basic --peerAddresses localhost:7051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/platform.chaincart.com/peers/peer0.platform.chaincart.com/tls/ca.crt" --peerAddresses localhost:9051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/flipkart.chaincart.com/peers/peer0.flipkart.chaincart.com/tls/ca.crt" --peerAddresses localhost:11051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/amazon.chaincart.com/peers/peer0.amazon.chaincart.com/tls/ca.crt" --peerAddresses localhost:13051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/myntra.chaincart.com/peers/peer0.myntra.chaincart.com/tls/ca.crt" --peerAddresses localhost:15051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/tataneu.chaincart.com/peers/peer0.tataneu.chaincart.com/tls/ca.crt" -c '{"function":"InitLedger","Args":[]}'
 
 
-sleep 2
+# sleep 2
 
 peer chaincode query -C mychannel -n basic -c '{"Args":["GetAllAssets"]}' | jq .
 

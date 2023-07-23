@@ -13,7 +13,7 @@ import (
 
 func main() {
 	// assetChaincode, err := contractapi.NewChaincode(&chaincode.SmartContract{})
-	chaincode, err := contractapi.NewChaincode(&chaincode.SmartContract{}, &chaincode.UserRegistrationContract{}, &chaincode.ERC20TokenContract{})
+	chaincode, err := contractapi.NewChaincode(&chaincode.SmartContract{}, &chaincode.UserRegistrationContract{})
 	if err != nil {
 		log.Panicf("Error creating asset-transfer-basic chaincode: %v", err)
 	}
