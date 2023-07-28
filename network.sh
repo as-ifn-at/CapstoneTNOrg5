@@ -354,6 +354,7 @@ function networkDown() {
   if [ "$MODE" != "restart" ]; then
     # Bring down the network, deleting the volumes
     ${CONTAINER_CLI} volume rm docker_orderer.chaincart.com docker_peer0.platform.chaincart.com docker_peer0.flipkart.chaincart.com docker_peer0.amazon.chaincart.com docker_peer0.myntra.chaincart.com docker_peer0.tataneu.chaincart.com
+    ${CONTAINER_CLI} volume rm compose_orderer.chaincart.com compose_peer0.amazon.chaincart.com compose_peer0.flipkart.chaincart.com compose_peer0.tataneu.chaincart.com compose_peer0.myntra.chaincart.com compose_peer0.platform.chaincart.com
     #Cleanup the chaincode containers
     clearContainers
     #Cleanup images
