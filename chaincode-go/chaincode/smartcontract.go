@@ -49,33 +49,29 @@ type User struct {
 	Cashback         int      `json:"cashback"`
 }
 
-type UserRegistrationContract struct {
-	contractapi.Contract
-}
+func (c *SmartContract) RegisterUser(ctx contractapi.TransactionContextInterface, name string, username string, password string, balance int) error {
+	// transientData, err := ctx.GetStub().GetTransient()
+	// if err != nil {
+	// 	return fmt.Errorf("failed to get transient data: %w", err)
+	// }
 
-func (c *UserRegistrationContract) RegisterUser(ctx contractapi.TransactionContextInterface) error {
-	transientData, err := ctx.GetStub().GetTransient()
-	if err != nil {
-		return fmt.Errorf("failed to get transient data: %w", err)
-	}
+	// if _, ok := transientData["name"]; !ok {
+	// 	return fmt.Errorf("name is required in transient data")
+	// }
+	// if _, ok := transientData["username"]; !ok {
+	// 	return fmt.Errorf("username is required in transient data")
+	// }
+	// if _, ok := transientData["password"]; !ok {
+	// 	return fmt.Errorf("password is required in transient data")
+	// }
+	// if _, ok := transientData["balance"]; !ok {
+	// 	return fmt.Errorf("balance is required in transient data")
+	// }
 
-	if _, ok := transientData["name"]; !ok {
-		return fmt.Errorf("name is required in transient data")
-	}
-	if _, ok := transientData["username"]; !ok {
-		return fmt.Errorf("username is required in transient data")
-	}
-	if _, ok := transientData["password"]; !ok {
-		return fmt.Errorf("password is required in transient data")
-	}
-	if _, ok := transientData["balance"]; !ok {
-		return fmt.Errorf("balance is required in transient data")
-	}
-
-	name := string(transientData["name"])
-	username := string(transientData["username"])
-	password := string(transientData["password"])
-	balance := int(transientData["balance"][0])
+	// name := string(transientData["name"])
+	// username := string(transientData["username"])
+	// password := string(transientData["password"])
+	// balance := int(transientData["balance"][0])
 
 	existing, err := ctx.GetStub().GetState(username)
 	if err != nil {
@@ -101,7 +97,7 @@ func (c *UserRegistrationContract) RegisterUser(ctx contractapi.TransactionConte
 		return fmt.Errorf("failed to marshal user: %w", err)
 	}
 
-	err = ctx.GetStub().PutPrivateData("collectionUser", username, userBytes)
+	err = ctx.GetStub().PutState(username, userBytes)
 	if err != nil {
 		return fmt.Errorf("failed to put user on private data: %w", err)
 	}

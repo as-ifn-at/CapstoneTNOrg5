@@ -1,32 +1,51 @@
 package web
 
 import (
+	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 
 	"github.com/hyperledger/fabric-gateway/pkg/client"
 )
 
+type TransientData struct {
+	Name     string `json:"name"`
+	Username string `json:"username"`
+	Balance  string `json:"balance"`
+	Password string `json:"password"`
+}
+
+var requestData struct {
+	Function     string        `json:"function"`
+	// TransientMap TransientData `json:"transientMap"`
+	Args         []string      `json:"args"`
+}
+
 // Invoke handles chaincode invoke requests.
 func (setup *OrgSetup) Invoke(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Received Invoke request")
-	if err := r.ParseForm(); err != nil {
-		fmt.Fprintf(w, "ParseForm() err: %s", err)
+
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, "Failed to read the request body", http.StatusInternalServerError)
 		return
 	}
+	defer r.Body.Close()
+
+	err = json.Unmarshal(body, &requestData)
+
+	if err != nil {
+		panic(err)
+	}
+
 	chainCodeName := "basic"
 	channelID := "mychannel"
-	function := "CreateToken"
-	args := []string{"67"}
-
-	trandata := make(map[string][]byte)
-
-	trandata["name"] = []byte("name")
-	trandata["username"] = []byte("username")
-	trandata["balance"] = []byte("balance")
-	trandata["password"] = []byte("transientData.Password")
+	function := requestData.Function
+	args := requestData.Args
 
 	fmt.Printf("channel: %s, chaincode: %s, function: %s, args: %s\n", channelID, chainCodeName, function, args)
+
 	network := setup.Gateway.GetNetwork(channelID)
 	contract := network.GetContract(chainCodeName)
 
@@ -46,19 +65,6 @@ func (setup *OrgSetup) Invoke(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Fprintf(w, "Transaction ID : %s Response: %s", txn_committed.TransactionID(), txn_endorsed.Result())
-}
-
-type TransientData struct {
-	Name     string `json:"name"`
-	Username string `json:"username"`
-	Balance  string `json:"balance"`
-	Password string `json:"password"`
-}
-
-var requestData struct {
-	Function     string        `json:"function"`
-	TransientMap TransientData `json:"transientMap"`
-	Args         []string      `json:"args"`
 }
 
 // func (setup *OrgSetup) Invoke(w http.ResponseWriter, r *http.Request) {
