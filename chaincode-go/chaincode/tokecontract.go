@@ -40,7 +40,7 @@ func (s *SmartContract) Mint(ctx contractapi.TransactionContextInterface, amount
 		return fmt.Errorf("failed to check if contract is already initialized: %v", err)
 	}
 	if !initialized {
-		return fmt.Errorf("Contract options need to be set before calling any function, call Initialize() to initialize contract")
+		return fmt.Errorf("contract options need to be set before calling any function, call Initialize() to initialize contract")
 	}
 
 	// Check minter authorization - this sample assumes Org1 is the central banker with privilege to mint new tokens

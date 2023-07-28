@@ -49,6 +49,26 @@ type User struct {
 	Cashback         int      `json:"cashback"`
 }
 
+func (c *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) error {
+	tokenSup := &TokenSupply{
+		TotalSupply:  10000.0,
+		BurnAmount:   0,
+		ChangeAmount: 0,
+	}
+
+	tokenSupBytes, err := json.Marshal(tokenSup)
+	if err != nil {
+		return err
+	}
+
+	err = ctx.GetStub().PutState("TotalSupply", tokenSupBytes)
+	if err != nil {
+		return fmt.Errorf("failed to put token on world state: %w", err)
+	}
+
+	return nil
+}
+
 func (c *SmartContract) RegisterUser(ctx contractapi.TransactionContextInterface, name string, username string, password string, balance int) error {
 	// transientData, err := ctx.GetStub().GetTransient()
 	// if err != nil {
@@ -105,21 +125,97 @@ func (c *SmartContract) RegisterUser(ctx contractapi.TransactionContextInterface
 	return nil
 }
 
-func (c *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) error {
-	tokenSup := &TokenSupply{
-		TotalSupply:  10000.0,
-		BurnAmount:   0,
-		ChangeAmount: 0,
+func (c *SmartContract) BuyProduct(ctx contractapi.TransactionContextInterface, productName string, productType string, productAmount float64, username string) error {
+	existing, err := ctx.GetStub().GetState(username)
+	if err != nil {
+		return fmt.Errorf("user with username %s doesn't exists", username)
 	}
 
-	tokenSupBytes, err := json.Marshal(tokenSup)
+	var updateUser User
+	err = json.Unmarshal(existing, &updateUser)
 	if err != nil {
-		return err
+		return fmt.Errorf("unable to unmarshal: %v", err)
 	}
 
-	err = ctx.GetStub().PutState("TotalSupply", tokenSupBytes)
+	updateUser.ProductsBought = append(updateUser.ProductsBought, productName)
+	updateUser.Cashback = int(productAmount * 0.05)
+	updateUser.Balance += updateUser.Cashback - int(productAmount)
+	marshalJson, _ := json.Marshal(updateUser)
+
+	err = ctx.GetStub().PutState(username, marshalJson)
 	if err != nil {
-		return fmt.Errorf("failed to put token on world state: %w", err)
+		return fmt.Errorf("failed to put user data: %w", err)
+	}
+
+	supply, err := ctx.GetStub().GetState("TotalSupply")
+	if err != nil {
+		return fmt.Errorf("unable to unmarshal: %v", err)
+	}
+
+	var nsupply TokenSupply
+	err = json.Unmarshal(supply, &nsupply)
+	if err != nil {
+		return fmt.Errorf("unable to unmarshal: %v", err)
+	}
+
+	nsupply.TotalSupply -= float64(updateUser.Cashback)
+	nsupply.ChangeAmount = float64(updateUser.Cashback)
+
+	marshalSup, err := json.Marshal(nsupply)
+	if err != nil {
+		return fmt.Errorf("unable to Marshal: %v", err)
+	}
+
+	err = ctx.GetStub().PutState("TotalSupply", marshalSup)
+	if err != nil {
+		return fmt.Errorf("unable to update: %v", err)
+	}
+
+	return nil
+}
+
+func (c *SmartContract) BuyToken(ctx contractapi.TransactionContextInterface, amount int, username string) error {
+	existing, err := ctx.GetStub().GetState(username)
+	if err != nil {
+		return fmt.Errorf("failed to read from world state: %w", err)
+	}
+
+	var updateUser User
+	err = json.Unmarshal(existing, &updateUser)
+	if err != nil {
+		return fmt.Errorf("unable to unmarshal: %v", err)
+	}
+
+	updateUser.Balance += amount
+
+	marshalJson, _ := json.Marshal(updateUser)
+
+	err = ctx.GetStub().PutState(username, marshalJson)
+	if err != nil {
+		return fmt.Errorf("failed to put user data: %w", err)
+	}
+
+	supply, err := ctx.GetStub().GetState("TotalSupply")
+	if err != nil {
+		return fmt.Errorf("unable to unmarshal: %v", err)
+	}
+
+	var nsupply TokenSupply
+	err = json.Unmarshal(supply, &nsupply)
+	if err != nil {
+		return fmt.Errorf("unable to unmarshal: %v", err)
+	}
+	nsupply.TotalSupply -= float64(updateUser.Cashback)
+	nsupply.ChangeAmount = float64(updateUser.Cashback)
+
+	marshalSup, err := json.Marshal(nsupply)
+	if err != nil {
+		return fmt.Errorf("unable to Marshal: %v", err)
+	}
+
+	err = ctx.GetStub().PutState("TotalSupply", marshalSup)
+	if err != nil {
+		return fmt.Errorf("unable to update: %v", err)
 	}
 
 	return nil
@@ -199,94 +295,71 @@ func (c *SmartContract) BurnToken(ctx contractapi.TransactionContextInterface, i
 	return nil
 }
 
-func (c *SmartContract) TransferTokens(ctx contractapi.TransactionContextInterface, transfers []TokenTransfer) error {
-	for _, transfer := range transfers {
-		existing, err := ctx.GetStub().GetState(transfer.ID)
-		if err != nil {
-			return fmt.Errorf("failed to read from world state: %w", err)
-		}
-		if existing == nil {
-			return fmt.Errorf("token with ID %s does not exist", transfer.ID)
-		}
+// func (c *SmartContract) TransferTokens(ctx contractapi.TransactionContextInterface, transfers []TokenTransfer) error {
+// 	for _, transfer := range transfers {
+// 		existing, err := ctx.GetStub().GetState(transfer.ID)
+// 		if err != nil {
+// 			return fmt.Errorf("failed to read from world state: %w", err)
+// 		}
+// 		if existing == nil {
+// 			return fmt.Errorf("token with ID %s does not exist", transfer.ID)
+// 		}
 
-		token := &Token{}
-		err = json.Unmarshal(existing, token)
-		if err != nil {
-			return fmt.Errorf("failed to unmarshal token: %w", err)
-		}
+// 		token := &Token{}
+// 		err = json.Unmarshal(existing, token)
+// 		if err != nil {
+// 			return fmt.Errorf("failed to unmarshal token: %w", err)
+// 		}
 
-		// Check if the invoker is the platform or the token owner
-		invokerID, err := ctx.GetClientIdentity().GetID()
-		if err != nil {
-			return fmt.Errorf("failed to get client identity: %w", err)
-		}
-		if invokerID != token.Owner && invokerID != "<platform ID>" { // Replace "<platform ID>" with the actual platform identity
-			return fmt.Errorf("only the platform or token owner can transfer tokens")
-		}
+// 		// Check if the invoker is the platform or the token owner
+// 		invokerID, err := ctx.GetClientIdentity().GetID()
+// 		if err != nil {
+// 			return fmt.Errorf("failed to get client identity: %w", err)
+// 		}
+// 		if invokerID != token.Owner && invokerID != "<platform ID>" { // Replace "<platform ID>" with the actual platform identity
+// 			return fmt.Errorf("only the platform or token owner can transfer tokens")
+// 		}
 
-		// Check the token balance of the owner
-		ownerBalance, err := c.GetBalance(ctx, token.Owner)
-		if err != nil {
-			return fmt.Errorf("failed to get token balance: %w", err)
-		}
-		if ownerBalance.Balance < transfer.Amount {
-			return fmt.Errorf("insufficient token balance for transfer")
-		}
+// 		// Check the token balance of the owner
+// 		ownerBalance, err := c.GetBalance(ctx, token.Owner)
+// 		if err != nil {
+// 			return fmt.Errorf("failed to get token balance: %w", err)
+// 		}
+// 		if ownerBalance.Balance < transfer.Amount {
+// 			return fmt.Errorf("insufficient token balance for transfer")
+// 		}
 
-		// Update the owner of the token
-		token.Owner = transfer.NewOwner
+// 		// Update the owner of the token
+// 		token.Owner = transfer.NewOwner
 
-		tokenBytes, err := json.Marshal(token)
-		if err != nil {
-			return fmt.Errorf("failed to marshal token: %w", err)
-		}
+// 		tokenBytes, err := json.Marshal(token)
+// 		if err != nil {
+// 			return fmt.Errorf("failed to marshal token: %w", err)
+// 		}
 
-		err = ctx.GetStub().PutState(transfer.ID, tokenBytes)
-		if err != nil {
-			return fmt.Errorf("failed to update token on world state: %w", err)
-		}
-	}
+// 		err = ctx.GetStub().PutState(transfer.ID, tokenBytes)
+// 		if err != nil {
+// 			return fmt.Errorf("failed to update token on world state: %w", err)
+// 		}
+// 	}
 
-	return nil
-}
+// 	return nil
+// }
 
-func (c *SmartContract) GetBalance(ctx contractapi.TransactionContextInterface, user string) (*UserBalance, error) {
-	balance := 0
-
-	queryString := fmt.Sprintf(`{
-		"selector": {
-			"docType": "token",
-			"owner": "%s"
-			}
-		}`, user)
-
-	resultsIterator, err := ctx.GetStub().GetQueryResult(queryString)
+func (c *SmartContract) GetBalance(ctx contractapi.TransactionContextInterface, username string) (int, error) {
+	
+	existing, err := ctx.GetStub().GetState(username)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get query result: %w", err)
-	}
-	defer resultsIterator.Close()
-
-	for resultsIterator.HasNext() {
-		result, err := resultsIterator.Next()
-		if err != nil {
-			return nil, fmt.Errorf("failed to iterate query result: %w", err)
-		}
-
-		token := &Token{}
-		err = json.Unmarshal(result.Value, token)
-		if err != nil {
-			return nil, fmt.Errorf("failed to unmarshal token: %w", err)
-		}
-
-		balance++
+		return -1, fmt.Errorf("user with username %s doesn't exists", username)
 	}
 
-	userBalance := &UserBalance{
-		User:    user,
-		Balance: balance,
+	var user User
+	err = json.Unmarshal(existing, &user)
+	if err != nil {
+		return -1, fmt.Errorf("unable to unmarshal: %v", err)
 	}
+	return user.Balance, nil
 
-	return userBalance, nil
 }
 
 // func main() {
