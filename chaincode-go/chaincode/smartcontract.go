@@ -27,6 +27,10 @@ type TokenSupply struct {
 	ChangeAmount float64 `json:"ChangeAmount"`
 }
 
+type IBalance struct {
+	Balance int `json:"balance"`
+}
+
 type TokenTransfer struct {
 	ID       string `json:"ID"`
 	NewOwner string `json:"newOwner"`
@@ -69,7 +73,7 @@ func (c *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) 
 	return nil
 }
 
-func (c *SmartContract) RegisterUser(ctx contractapi.TransactionContextInterface, name string, username string, password string, balance int) error {
+func (c *SmartContract) RegisterUser(ctx contractapi.TransactionContextInterface, name string, username string, password string) error {
 	// transientData, err := ctx.GetStub().GetTransient()
 	// if err != nil {
 	// 	return fmt.Errorf("failed to get transient data: %w", err)
@@ -105,7 +109,7 @@ func (c *SmartContract) RegisterUser(ctx contractapi.TransactionContextInterface
 		ObjectType:       "user",
 		Name:             name,
 		Username:         username,
-		Balance:          balance,
+		Balance:          0,
 		Password:         password,
 		ProductsBought:   []string{},
 		ProductsReturned: []string{},
@@ -123,6 +127,26 @@ func (c *SmartContract) RegisterUser(ctx contractapi.TransactionContextInterface
 	}
 
 	return nil
+}
+
+func (c *SmartContract) GetUser(ctx contractapi.TransactionContextInterface, username string, password string) (*User, error) {
+
+	existing, err := ctx.GetStub().GetState(username)
+	if err != nil {
+		return nil, fmt.Errorf("user with username %s doesn't exists", username)
+	}
+
+	var updateUser User
+	err = json.Unmarshal(existing, &updateUser)
+	if err != nil {
+		return nil, fmt.Errorf("unable to unmarshal: %v", err)
+	}
+
+	if updateUser.Password == password {
+		return &updateUser, nil
+	}
+
+	return nil, fmt.Errorf("invalid username or password: %s", username)
 }
 
 func (c *SmartContract) BuyProduct(ctx contractapi.TransactionContextInterface, productName string, productType string, productAmount float64, username string) error {
@@ -346,20 +370,24 @@ func (c *SmartContract) BurnToken(ctx contractapi.TransactionContextInterface, i
 // 	return nil
 // }
 
-func (c *SmartContract) GetBalance(ctx contractapi.TransactionContextInterface, username string) (int, error) {
-	
+func (c *SmartContract) GetBalance(ctx contractapi.TransactionContextInterface, username string) (*IBalance, error) {
+
 	existing, err := ctx.GetStub().GetState(username)
 	if err != nil {
-		return -1, fmt.Errorf("user with username %s doesn't exists", username)
+		return nil, fmt.Errorf("user with username %s doesn't exists", username)
 	}
 
 	var user User
 	err = json.Unmarshal(existing, &user)
 	if err != nil {
-		return -1, fmt.Errorf("unable to unmarshal: %v", err)
+		return nil, fmt.Errorf("unable to unmarshal: %v", err)
 	}
-	return user.Balance, nil
 
+	nbalance := &IBalance{
+		Balance: user.Balance,
+	}
+
+	return nbalance, nil
 }
 
 // func main() {
