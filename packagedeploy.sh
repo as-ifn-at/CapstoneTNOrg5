@@ -11,7 +11,7 @@ export FABRIC_CFG_PATH=$PWD/../config/
 peer version
 sleep 2
 peer lifecycle chaincode package ${packagename}.tar.gz --path ./chaincode-go/ --lang golang --label ${packagename}_1.0
-echo "------------package successfull-----------------"
+echo "------------package successful-----------------"
 sleep 2
 
 echo "------------Installing to Org1-----------"
@@ -100,17 +100,3 @@ peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.cha
 sleep 2
 
 peer chaincode query -C mychannel -n basic -c '{"Args":["GetAllAssets"]}' | jq .
-
-
-# cd api
-
-# rm -rf wallet
-# node enrollBank.js
-# node enrollCim.js
-# node enrollPlatform.js
-
-# node registerBank.js
-# # node registerCim.js
-# node registerPlatform.js
-
-# cd ..
