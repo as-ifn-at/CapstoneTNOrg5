@@ -4,15 +4,15 @@
 
 echo "------------Package Chaincode-----------"
 cd chaincode-go && GO111MODULE=on go mod vendor
-sleep 3
+
 cd ..
 export PATH=${PWD}/../bin:$PATH
 export FABRIC_CFG_PATH=$PWD/../config/
 peer version
-sleep 2
+
 peer lifecycle chaincode package ${packagename}.tar.gz --path ./chaincode-go/ --lang golang --label ${packagename}_1.0
-echo "------------package successful-----------------"
-sleep 2
+
+echo "------------package successfull-----------------"
 
 echo "------------Installing to Org1-----------"
 export CORE_PEER_TLS_ENABLED=true
@@ -57,34 +57,28 @@ export CORE_PEER_TLS_ENABLED=true
 export $(./setOrgEnv.sh org1 | xargs)
 peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.chaincart.com --channelID ${channelname} --name ${packagename} --version 1.0 --package-id $CC_PACKAGE_ID --sequence 1 --tls --cafile "${PWD}/organizations/ordererOrganizations/chaincart.com/orderers/orderer.chaincart.com/msp/tlscacerts/tlsca.chaincart.com-cert.pem"
 echo "------------Success-----------"
-sleep 5
 
 echo "------------Approving chaincode by Org2-----------"
 export $(./setOrgEnv.sh org2 | xargs)
 peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.chaincart.com --channelID ${channelname} --name ${packagename} --version 1.0 --package-id $CC_PACKAGE_ID --sequence 1 --tls --cafile "${PWD}/organizations/ordererOrganizations/chaincart.com/orderers/orderer.chaincart.com/msp/tlscacerts/tlsca.chaincart.com-cert.pem"
 echo "------------Success-----------"
-sleep 5
 
 echo "------------Approving chaincode by Org3-----------"
 export $(./setOrgEnv.sh org3 | xargs)
 peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.chaincart.com --channelID ${channelname} --name ${packagename} --version 1.0 --package-id $CC_PACKAGE_ID --sequence 1 --tls --cafile "${PWD}/organizations/ordererOrganizations/chaincart.com/orderers/orderer.chaincart.com/msp/tlscacerts/tlsca.chaincart.com-cert.pem"
 echo "------------Success-----------"
-sleep 5
 
 echo "------------Approving chaincode by Org4-----------"
 export $(./setOrgEnv.sh org4 | xargs)
 peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.chaincart.com --channelID ${channelname} --name ${packagename} --version 1.0 --package-id $CC_PACKAGE_ID --sequence 1 --tls --cafile "${PWD}/organizations/ordererOrganizations/chaincart.com/orderers/orderer.chaincart.com/msp/tlscacerts/tlsca.chaincart.com-cert.pem"
 echo "------------Success-----------"
-sleep 5
 
 echo "------------Approving chaincode by Org5-----------"
 export $(./setOrgEnv.sh org5 | xargs)
 peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.chaincart.com --channelID ${channelname} --name ${packagename} --version 1.0 --package-id $CC_PACKAGE_ID --sequence 1 --tls --cafile "${PWD}/organizations/ordererOrganizations/chaincart.com/orderers/orderer.chaincart.com/msp/tlscacerts/tlsca.chaincart.com-cert.pem"
 echo "------------Success-----------"
-sleep 5
 
 peer lifecycle chaincode checkcommitreadiness --channelID ${channelname} --name ${packagename} --version 1.0 --sequence 1 --tls --cafile "${PWD}/organizations/ordererOrganizations/chaincart.com/orderers/orderer.chaincart.com/msp/tlscacerts/tlsca.chaincart.com-cert.pem" --output json
-sleep 3
 
 echo "--------Commit chaincode-------------"
 peer lifecycle chaincode commit -o localhost:7050 --ordererTLSHostnameOverride orderer.chaincart.com --channelID ${channelname} --name ${packagename} --version 1.0 --sequence 1 --tls --cafile "${PWD}/organizations/ordererOrganizations/chaincart.com/orderers/orderer.chaincart.com/msp/tlscacerts/tlsca.chaincart.com-cert.pem" --peerAddresses localhost:7051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org1.chaincart.com/peers/peer0.org1.chaincart.com/tls/ca.crt" --peerAddresses localhost:9051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org2.chaincart.com/peers/peer0.org2.chaincart.com/tls/ca.crt" --peerAddresses localhost:11051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org3.chaincart.com/peers/peer0.org3.chaincart.com/tls/ca.crt" --peerAddresses localhost:13051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org4.chaincart.com/peers/peer0.org4.chaincart.com/tls/ca.crt" --peerAddresses localhost:15051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org5.chaincart.com/peers/peer0.org5.chaincart.com/tls/ca.crt"
@@ -95,7 +89,6 @@ peer lifecycle chaincode querycommitted --channelID ${channelname} --name ${pack
 # Invoke chaincode
 
 peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.chaincart.com --tls --cafile "${PWD}/organizations/ordererOrganizations/chaincart.com/orderers/orderer.chaincart.com/msp/tlscacerts/tlsca.chaincart.com-cert.pem" -C mychannel -n basic --peerAddresses localhost:7051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org1.chaincart.com/peers/peer0.org1.chaincart.com/tls/ca.crt" --peerAddresses localhost:9051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org2.chaincart.com/peers/peer0.org2.chaincart.com/tls/ca.crt" --peerAddresses localhost:11051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org3.chaincart.com/peers/peer0.org3.chaincart.com/tls/ca.crt" --peerAddresses localhost:13051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org4.chaincart.com/peers/peer0.org4.chaincart.com/tls/ca.crt" --peerAddresses localhost:15051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org5.chaincart.com/peers/peer0.org5.chaincart.com/tls/ca.crt" -c '{"function":"InitLedger","Args":[]}'
-
 
 sleep 2
 
