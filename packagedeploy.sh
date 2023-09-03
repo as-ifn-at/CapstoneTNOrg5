@@ -11,6 +11,7 @@ export FABRIC_CFG_PATH=$PWD/../config/
 peer version
 
 peer lifecycle chaincode package ${packagename}.tar.gz --path ./chaincode-go/ --lang golang --label ${packagename}_1.0
+
 echo "------------package successfull-----------------"
 
 echo "------------Installing to Org1-----------"
